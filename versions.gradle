@@ -21,6 +21,6 @@ ext.versions = [
         minSdk: 19,
 
         // GRADLE CONFIGS
-        gradleVersion: '3.2.0-alpha18'
+        gradleVersion: '3.2.0-beta02'
 
 ]

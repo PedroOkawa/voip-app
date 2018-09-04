@@ -1,3 +1,4 @@
+apply plugin: 'kotlin-kapt'
 apply from: '../libraries.gradle'
 
 dependencies {
