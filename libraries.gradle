@@ -43,6 +43,15 @@ ext.libraries = [
                 android                 : "org.mockito:mockito-android:$versions.mockitoAndroidVersion"
         ],
 
+        phoneNumber : [
+                base                    : "com.googlecode.libphonenumber:libphonenumber:$versions.phoneNumberVersion"
+        ],
+
+        rx : [
+                android                 : "io.reactivex.rxjava2:rxandroid:$versions.rxAndroidVersion",
+                kotlin                  : "io.reactivex.rxjava2:rxkotlin:$versions.rxKotlinVersion"
+        ],
+
         test : [
                 contrib                 : "com.android.support.test.espresso:espresso-contrib:$versions.testEspressoVersion",
                 core                    : "com.android.support.test.espresso:espresso-core:$versions.testEspressoVersion",

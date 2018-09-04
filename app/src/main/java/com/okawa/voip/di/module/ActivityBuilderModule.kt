@@ -11,7 +11,7 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector
     abstract fun contributesSplashActivity(): SplashActivity
 
-    @ContributesAndroidInjector
+    @ContributesAndroidInjector(modules = [ OnBoardingModule::class ])
     abstract fun contributesOnBoardingActivity(): OnBoardingActivity
 
 }
