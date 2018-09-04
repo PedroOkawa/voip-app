@@ -1,0 +1,26 @@
+ext.versions = [
+
+        appCompatVersion: '27.1.1',
+        appCompatMultidexVersion: '1.0.3',
+        appCompatConstraintLayoutVersion: '1.1.2',
+        architectureVersion: '1.1.1',
+        daggerVersion: '2.16',
+        glideVersion: '4.5.0',
+        jUnitVersion: '4.12',
+        kotlinVersion: '1.2.50',
+        mockitoVersion: '2.8.47',
+        mockitoAndroidVersion: '2.19.0',
+        runnerVersion: '1.0.2',
+        testEspressoVersion: '3.0.2',
+        testRunnerVersion: '1.0.2',
+        testRulesVersion: '1.0.2',
+
+        // ANDROID CONFIGS
+        compileSdk: 28,
+        targetSdk: 28,
+        minSdk: 19,
+
+        // GRADLE CONFIGS
+        gradleVersion: '3.2.0-alpha18'
+
+]

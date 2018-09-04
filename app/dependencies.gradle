@@ -1,0 +1,46 @@
+apply from: '../libraries.gradle'
+
+dependencies {
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
+
+    /* GOOGLE */
+    implementation libraries.appCompat.base
+    implementation libraries.appCompat.constraintLayout
+    implementation libraries.appCompat.recyclerView
+
+    /* DAGGER */
+    implementation libraries.dagger.base
+    implementation libraries.dagger.android
+    implementation libraries.dagger.androidSupport
+    kapt libraries.dagger.compiler
+    kapt libraries.dagger.androidProcessor
+
+    /* GLIDE */
+    implementation libraries.glide.base
+
+    /* KOTLIN */
+    implementation libraries.kotlin.base
+
+    /** TESTS **/
+
+    /* JUNIT */
+    testImplementation libraries.jUnit.base
+
+    // DAGGER
+    androidTestImplementation libraries.dagger.base
+    androidTestImplementation libraries.dagger.android
+    androidTestImplementation libraries.dagger.androidSupport
+    kaptAndroidTest libraries.dagger.compiler
+    kaptAndroidTest libraries.dagger.androidProcessor
+
+    // ESPRESSO
+    androidTestImplementation libraries.test.contrib
+    androidTestImplementation libraries.test.core
+    androidTestImplementation libraries.test.intents
+    androidTestImplementation libraries.test.runner
+    androidTestImplementation libraries.test.rules
+
+    // MOCKITO
+    androidTestImplementation libraries.mockito.android
+    testImplementation libraries.mockito.android
+}
