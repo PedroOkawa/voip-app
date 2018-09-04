@@ -1,4 +1,4 @@
-package com.okawa.voip.ui
+package com.okawa.voip.ui.base
 
 import android.databinding.DataBindingUtil
 import android.databinding.ViewDataBinding
@@ -14,9 +14,15 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected lateinit var dataBinding: T
 
+    /**
+     * Retrieves the layout to be inflated by the fragment
+     */
     @LayoutRes
     abstract fun layoutToInflate(): Int
 
+    /**
+     * Method called whenever the fragment is created
+     */
     abstract fun doOnCreated()
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -33,6 +39,9 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
         super.onDestroyView()
     }
 
+    /**
+     * Defines the data binding to be used by the fragment
+     */
     private fun defineDataBinding(inflater: LayoutInflater, container: ViewGroup?): View {
         dataBinding = DataBindingUtil.inflate(inflater, layoutToInflate(), container, false)
         return dataBinding.root

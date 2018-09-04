@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#008577</color>
-    <color name="colorPrimaryDark">#00574B</color>
-    <color name="colorAccent">#D81B60</color>
+
+    <!-- THEME -->
+
+    <color name="colorPrimary">@color/colorBlue4E7DAC</color>
+    <color name="colorPrimaryDark">@color/colorBlue375A7E</color>
+    <color name="colorAccent">@color/colorYellowD9AB4E</color>
+
+    <!-- BASE COLORS -->
+
+    <color name="colorBlue4E7DAC">#4E7DAC</color>
+    <color name="colorBlue375A7E">#375A7E</color>
+    <color name="colorYellowD9AB4E">#D9AB4E</color>
+
 </resources>

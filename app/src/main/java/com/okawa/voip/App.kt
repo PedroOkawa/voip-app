@@ -2,7 +2,7 @@ package com.okawa.voip
 
 import android.app.Activity
 import android.app.Application
-import com.okawa.voip.di.DaggerAppComponent
+import com.okawa.voip.di.component.DaggerAppComponent
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.HasActivityInjector
 import javax.inject.Inject
@@ -19,6 +19,9 @@ class App : Application(), HasActivityInjector {
         setupDependencyInjection()
     }
 
+    /**
+     * Injects the app component
+     */
     private fun setupDependencyInjection() {
         DaggerAppComponent.builder().application(this).build().inject(this)
     }

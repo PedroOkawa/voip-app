@@ -6,8 +6,6 @@ ext.libraries = [
                 lifecycle               : "android.arch.lifecycle:extensions:$versions.architectureVersion",
                 lifecycleCompiler       : "android.arch.lifecycle:compiler:$versions.architectureVersion",
                 lifecycleRuntime        : "android.arch.lifecycle:runtime:$versions.architectureVersion",
-                viewModel               : "android.arch.lifecycle:viewmodel:$versions.architectureVersion",
-                viewModelKotlin         : "android.arch.lifecycle:viewmodel-ktx:$versions.architectureVersion",
                 livedata                : "android.arch.lifecycle:livedata:$versions.architectureVersion",
                 coreTesting             : "android.arch.core:core-testing:$versions.architectureVersion"
         ],
