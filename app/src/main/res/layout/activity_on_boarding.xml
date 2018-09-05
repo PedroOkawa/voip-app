@@ -1,9 +1,49 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="match_parent"
+        android:padding="16dp">
+
+        <TextView
+            style="@style/AppTheme.Text.HeadlineSix.Bold"
+            android:id="@+id/txtOnBoardingDescription"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/on_boarding_phone_validation_description"/>
+
+        <AutoCompleteTextView
+            style="@style/AppTheme.Text.SubtitleOne"
+            android:id="@+id/acmOnBoardingCountryCodes"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ellipsize="end"
+            android:hint="@string/on_boarding_phone_validation_country_hint"
+            android:singleLine="true"
+            android:imeOptions="actionSearch"
+            app:layout_constraintTop_toBottomOf="@+id/txtOnBoardingDescription"/>
+
+        <EditText
+            style="@style/AppTheme.Text.SubtitleOne"
+            android:id="@+id/edtOnBoardingPhoneNumber"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="phone"
+            android:hint="@string/on_boarding_phone_validation_phone_hint"
+            android:lines="1"
+            android:imeOptions="actionDone"
+            app:layout_constraintTop_toBottomOf="@+id/acmOnBoardingCountryCodes"/>
+
+        <Button
+            style="@style/AppTheme.Text.Button.Light"
+            android:id="@+id/btnOnBoardingValidate"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/on_boarding_phone_validation_button"
+            android:background="@drawable/selector_button"
+            app:layout_constraintTop_toBottomOf="@+id/edtOnBoardingPhoneNumber"/>
 
     </android.support.constraint.ConstraintLayout>
 

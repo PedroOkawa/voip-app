@@ -20,6 +20,8 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), HasSuppo
 
     /**
      * Retrieved the layout to be inflated by the activity
+     *
+     * @return layout id to be inflated
      */
     @LayoutRes
     abstract fun layoutToInflate(): Int

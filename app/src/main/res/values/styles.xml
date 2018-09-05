@@ -4,6 +4,210 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorControlNormal">@color/colorTextDark</item>
+        <item name="colorControlActivated">@color/colorTextDark</item>
+        <item name="colorControlHighlight">@color/colorTextDark</item>
+        <item name="android:windowBackground">@color/colorWindow</item>
+    </style>
+
+    <!-- TEXT BASE -->
+
+    <style name="AppTheme.Text">
+        <item name="android:textColor">@color/colorTextDark</item>
+    </style>
+
+    <!-- TEXT REGULAR -->
+
+    <style name="AppTheme.Text.HeadlineOne">
+        <item name="android:textSize">@dimen/text_size_headline_one</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineTwo">
+        <item name="android:textSize">@dimen/text_size_headline_two</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineThree">
+        <item name="android:textSize">@dimen/text_size_headline_three</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFour">
+        <item name="android:textSize">@dimen/text_size_headline_four</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFive">
+        <item name="android:textSize">@dimen/text_size_headline_five</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineSix">
+        <item name="android:textSize">@dimen/text_size_headline_six</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleOne">
+        <item name="android:textSize">@dimen/text_size_subtitle_one</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleTwo">
+        <item name="android:textSize">@dimen/text_size_subtitle_two</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyOne">
+        <item name="android:textSize">@dimen/text_size_body_one</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyTwo">
+        <item name="android:textSize">@dimen/text_size_body_two</item>
+    </style>
+
+    <style name="AppTheme.Text.Button">
+        <item name="android:textSize">@dimen/text_size_button</item>
+        <item name="android:textAllCaps">true</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Caption">
+        <item name="android:textSize">@dimen/text_size_caption</item>
+    </style>
+
+    <!-- TEXT BOLD -->
+
+    <style name="AppTheme.Text.HeadlineOne.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineTwo.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineThree.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFour.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFive.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineSix.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleOne.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleTwo.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyOne.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyTwo.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="AppTheme.Text.Caption.Bold">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- TEXT REGULAR LIGHT -->
+
+    <style name="AppTheme.Text.HeadlineOne.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineTwo.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineThree.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFour.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFive.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineSix.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleOne.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleTwo.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyOne.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyTwo.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.Button.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.Caption.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <!-- TEXT BOLD LIGHT -->
+
+    <style name="AppTheme.Text.HeadlineOne.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineTwo.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineThree.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFour.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineFive.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.HeadlineSix.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleOne.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.SubtitleTwo.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyOne.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.BodyTwo.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
+    </style>
+
+    <style name="AppTheme.Text.Caption.Bold.Light">
+        <item name="android:textColor">@color/colorTextLight</item>
     </style>
 
 </resources>

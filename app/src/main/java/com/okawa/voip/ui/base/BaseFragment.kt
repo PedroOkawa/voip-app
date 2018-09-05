@@ -16,6 +16,8 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     /**
      * Retrieves the layout to be inflated by the fragment
+     *
+     * @return layout id to be inflated
      */
     @LayoutRes
     abstract fun layoutToInflate(): Int
@@ -41,6 +43,11 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     /**
      * Defines the data binding to be used by the fragment
+     *
+     * @param inflater layout inflater
+     * @param container view container that will hold the inflated layout
+     *
+     * @return inflated view
      */
     private fun defineDataBinding(inflater: LayoutInflater, container: ViewGroup?): View {
         dataBinding = DataBindingUtil.inflate(inflater, layoutToInflate(), container, false)

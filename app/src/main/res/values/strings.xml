@@ -3,4 +3,9 @@
 
     <!-- ON BOARDING -->
 
+    <string name="on_boarding_phone_validation_description">Please, insert your phone number to validate your account</string>
+    <string name="on_boarding_phone_validation_country_hint">Country</string>
+    <string name="on_boarding_phone_validation_phone_hint">Phone Number</string>
+    <string name="on_boarding_phone_validation_button">Validate</string>
+
 </resources>

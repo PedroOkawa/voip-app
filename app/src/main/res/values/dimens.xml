@@ -1,4 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- TEXT SIZES -->
+
+    <dimen name="text_size_headline_one">96sp</dimen>
+    <dimen name="text_size_headline_two">60sp</dimen>
+    <dimen name="text_size_headline_three">48sp</dimen>
+    <dimen name="text_size_headline_four">34sp</dimen>
+    <dimen name="text_size_headline_five">24sp</dimen>
+    <dimen name="text_size_headline_six">20sp</dimen>
+    <dimen name="text_size_subtitle_one">16sp</dimen>
+    <dimen name="text_size_subtitle_two">14sp</dimen>
+    <dimen name="text_size_body_one">16sp</dimen>
+    <dimen name="text_size_body_two">14sp</dimen>
+    <dimen name="text_size_button">14sp</dimen>
+    <dimen name="text_size_caption">12sp</dimen>
+
 </resources>

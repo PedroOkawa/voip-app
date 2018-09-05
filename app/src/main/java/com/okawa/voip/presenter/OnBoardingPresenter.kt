@@ -2,6 +2,6 @@ package com.okawa.voip.presenter
 
 interface OnBoardingPresenter {
 
-    fun retrieveCountryCodes()
+    fun retrieveCountries() : List<String>
 
 }
