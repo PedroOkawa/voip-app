@@ -23,7 +23,7 @@ class PhoneNumberRepositoryImpl @Inject constructor() : PhoneNumberRepository {
         }
     }
 
-    override fun validateNumber(number: String, region: String) = phoneNumberUtil.isPossibleNumber(number, region)
+    override fun validateNumber(region: String, number: String) = phoneNumberUtil.isPossibleNumber(number, region)
 
     /**
      * Converts the region to a country code with display name and code

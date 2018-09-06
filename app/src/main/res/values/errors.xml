@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- ON BOARDING -->
+
+    <string name="on_boarding_error_invalid_phone">Please, provide a valid number by filling correctly the fields</string>
+
+</resources>

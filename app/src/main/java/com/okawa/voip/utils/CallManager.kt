@@ -15,7 +15,11 @@ class CallManager @Inject constructor() {
      * @return OnBoardingActivity intent
      */
     fun onBoarding(context: Context) : Intent {
-        return Intent(context, OnBoardingActivity::class.java)
+        val intent = Intent(context, OnBoardingActivity::class.java)
+
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+
+        return intent
     }
 
 }

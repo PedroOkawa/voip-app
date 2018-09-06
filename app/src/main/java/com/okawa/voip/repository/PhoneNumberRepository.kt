@@ -12,9 +12,9 @@ interface PhoneNumberRepository {
     /**
      * Validates the requested phone number
      *
-     * @param number phone number
      * @param region region abbreviation
+     * @param number phone number
      */
-    fun validateNumber(number: String, region: String) : Boolean
+    fun validateNumber(region: String, number: String) : Boolean
 
 }

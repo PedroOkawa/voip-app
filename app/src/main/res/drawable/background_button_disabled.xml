@@ -5,6 +5,6 @@
         android:startColor="@color/colorButtonDisabledStart"
         android:endColor="@color/colorButtonDisabledEnd"/>
 
-    <corners android:radius="4dp"/>
+    <corners android:radius="@dimen/button_corner_radius"/>
 
 </shape>

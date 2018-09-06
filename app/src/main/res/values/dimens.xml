@@ -1,6 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- THEME -->
+
+    <dimen name="button_corner_radius">4dp</dimen>
+
+    <!-- ON BOARDING -->
+
+    <dimen name="on_boarding_phone_validation_item_margin">16dp</dimen>
+
     <!-- TEXT SIZES -->
 
     <dimen name="text_size_headline_one">96sp</dimen>

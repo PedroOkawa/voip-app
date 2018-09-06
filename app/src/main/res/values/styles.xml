@@ -10,6 +10,16 @@
         <item name="android:windowBackground">@color/colorWindow</item>
     </style>
 
+    <style name="AppTheme.Splash">
+        <item name="android:windowBackground">@color/colorWindowSplash</item>
+    </style>
+
+    <style name="AppTheme.Toolbar">
+        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
+        <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+    </style>
+
     <!-- TEXT BASE -->
 
     <style name="AppTheme.Text">

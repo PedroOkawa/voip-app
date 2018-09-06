@@ -5,12 +5,8 @@ import javax.inject.Inject
 
 class OnBoardingPresenterImpl @Inject constructor(private val phoneNumberRepository: PhoneNumberRepository) : OnBoardingPresenter {
 
-    override fun retrieveCountries(): List<String> {
-        return phoneNumberRepository.retrieveCountryCodes().sortedBy { countryCode ->
-            countryCode.name
-        }.map { countryCode ->
-            countryCode.name
-        }
-    }
+    override fun retrieveCountryCodes() = phoneNumberRepository.retrieveCountryCodes()
+
+    override fun validatePhoneNumber(region: String, phoneNumber: String) = phoneNumberRepository.validateNumber(region, phoneNumber)
 
 }

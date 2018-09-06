@@ -7,6 +7,7 @@
     <color name="colorPrimaryDark">@color/colorBlue375A7E</color>
     <color name="colorAccent">@color/colorYellowD9AB4E</color>
     <color name="colorWindow">@color/colorWhiteF4F7F9</color>
+    <color name="colorWindowSplash">@color/colorBlue375A7E</color>
 
     <!-- TEXT -->
 
