@@ -1,6 +1,6 @@
 package com.okawa.voip.di.module
 
-import com.okawa.voip.utils.CallManager
+import com.okawa.voip.utils.manager.CallManager
 import dagger.Module
 import dagger.Provides
 import javax.inject.Singleton

@@ -8,9 +8,10 @@ import com.okawa.voip.databinding.ActivityOnBoardingBinding
 import com.okawa.voip.model.CountryCode
 import com.okawa.voip.presenter.OnBoardingPresenter
 import com.okawa.voip.ui.base.BaseActivity
-import com.okawa.voip.utils.CountryAdapter
-import com.okawa.voip.utils.clear
-import com.okawa.voip.utils.isEmpty
+import com.okawa.voip.utils.adapter.CountryAdapter
+import com.okawa.voip.utils.extensions.adjustCursor
+import com.okawa.voip.utils.extensions.clear
+import com.okawa.voip.utils.extensions.isEmpty
 import javax.inject.Inject
 
 class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
@@ -61,8 +62,10 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
         dataBinding.acmOnBoardingCountryCodes.setAdapter(countriesAdapter)
         dataBinding.acmOnBoardingCountryCodes.threshold = 1
-        dataBinding.acmOnBoardingCountryCodes.setOnDismissListener {
-            execOnSearchDismiss()
+        dataBinding.acmOnBoardingCountryCodes.setOnFocusChangeListener { _, hasFocus ->
+            if(!hasFocus) {
+                defineSearchText()
+            }
         }
     }
 
@@ -71,6 +74,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      */
     private fun initValidateButton() {
         dataBinding.btnOnBoardingValidate.setOnClickListener {
+            defineSearchText()
             if(validateForm()) {
                 // TODO: REGISTER THE PHONE ON GOOGLE ACCOUNTS AND START MAIN ACTIVITY
                 Log.w("TEST", "START MAIN ACTIVITY")
@@ -84,7 +88,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      * Clear the text or set the first and only item on adapter on country edit text,
      * depending on content
      */
-    private fun execOnSearchDismiss() {
+    private fun defineSearchText() {
         if(!dataBinding.acmOnBoardingCountryCodes.isEmpty()) {
             if (countriesAdapter.isEmpty) {
                 dataBinding.acmOnBoardingCountryCodes.clear()
@@ -92,6 +96,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
                 countryCode = countriesAdapter.getItem(0)
                 dataBinding.acmOnBoardingCountryCodes.setText(countryCode.toString())
             }
+            dataBinding.acmOnBoardingCountryCodes.adjustCursor()
             dataBinding.acmOnBoardingCountryCodes.clearFocus()
         }
     }

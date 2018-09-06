@@ -1,4 +1,4 @@
-package com.okawa.voip.utils
+package com.okawa.voip.utils.manager
 
 import android.content.Context
 import android.content.Intent

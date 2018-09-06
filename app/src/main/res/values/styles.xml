@@ -18,6 +18,7 @@
         <item name="android:background">@color/colorPrimary</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
+        <item name="titleTextColor">@color/colorTextLight</item>
     </style>
 
     <!-- TEXT BASE -->

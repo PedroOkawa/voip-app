@@ -1,4 +1,4 @@
-package com.okawa.voip.utils
+package com.okawa.voip.utils.adapter
 
 import android.content.Context
 import android.widget.ArrayAdapter
