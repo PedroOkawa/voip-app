@@ -1,42 +1,41 @@
 package com.okawa.voip.ui.onboarding
 
-import android.os.Bundle
-import android.util.Log
 import android.widget.Toast
 import com.okawa.voip.R
 import com.okawa.voip.databinding.ActivityOnBoardingBinding
-import com.okawa.voip.model.CountryCode
-import com.okawa.voip.presenter.OnBoardingPresenter
+import com.okawa.voip.presenter.onboarding.OnBoardingPresenter
 import com.okawa.voip.ui.base.BaseActivity
 import com.okawa.voip.utils.adapter.CountryAdapter
 import com.okawa.voip.utils.extensions.adjustCursor
 import com.okawa.voip.utils.extensions.clear
+import com.okawa.voip.utils.extensions.getTextString
 import com.okawa.voip.utils.extensions.isEmpty
+import com.okawa.voip.utils.manager.CallManager
 import javax.inject.Inject
 
 class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
 
-    companion object {
-        const val BUNDLE_ON_BOARDING_COUNTRY_CODE = "on_boarding_country_code"
-    }
-
     @Inject
     lateinit var onBoardingPresenter: OnBoardingPresenter
 
-    private var countryCode: CountryCode? = null
-    private lateinit var countriesAdapter: CountryAdapter
+    @Inject
+    lateinit var callManager: CallManager
+
+    private val region: String
+        get() {
+            return onBoardingPresenter.retrieveRegion(dataBinding.acmOnBoardingCountryCodes.getTextString())
+        }
+
+    private val phoneNumber: String
+        get() {
+            return dataBinding.edtOnBoardingPhoneNumber.getTextString()
+        }
+
+    private val countryAdapter: CountryAdapter by lazy {
+        CountryAdapter(this, onBoardingPresenter.retrieveCountries())
+    }
 
     override fun layoutToInflate() = R.layout.activity_on_boarding
-
-    override fun onSaveInstanceState(outState: Bundle?) {
-        super.onSaveInstanceState(outState)
-        outState?.putParcelable(BUNDLE_ON_BOARDING_COUNTRY_CODE, countryCode)
-    }
-
-    override fun onRestoreInstanceState(savedInstanceState: Bundle?) {
-        super.onRestoreInstanceState(savedInstanceState)
-        countryCode = savedInstanceState?.getParcelable(BUNDLE_ON_BOARDING_COUNTRY_CODE)
-    }
 
     override fun doOnCreated() {
         initToolbar()
@@ -56,11 +55,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      * Initializes the countries auto complete edit text
      */
     private fun initCountriesView() {
-        countriesAdapter = CountryAdapter(
-                this,
-                onBoardingPresenter.retrieveCountryCodes())
-
-        dataBinding.acmOnBoardingCountryCodes.setAdapter(countriesAdapter)
+        dataBinding.acmOnBoardingCountryCodes.setAdapter(countryAdapter)
         dataBinding.acmOnBoardingCountryCodes.threshold = 1
         dataBinding.acmOnBoardingCountryCodes.setOnFocusChangeListener { _, hasFocus ->
             if(!hasFocus) {
@@ -76,8 +71,9 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
         dataBinding.btnOnBoardingValidate.setOnClickListener {
             defineSearchText()
             if(validateForm()) {
-                // TODO: REGISTER THE PHONE ON GOOGLE ACCOUNTS AND START MAIN ACTIVITY
-                Log.w("TEST", "START MAIN ACTIVITY")
+                onBoardingPresenter.storeAccount(this@OnBoardingActivity, phoneNumber) {
+                    startActivity(callManager.main(this@OnBoardingActivity))
+                }
             } else {
                 Toast.makeText(this@OnBoardingActivity, R.string.on_boarding_error_invalid_phone, Toast.LENGTH_SHORT).show()
             }
@@ -90,10 +86,10 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      */
     private fun defineSearchText() {
         if(!dataBinding.acmOnBoardingCountryCodes.isEmpty()) {
-            if (countriesAdapter.isEmpty) {
+            if (countryAdapter.isEmpty) {
                 dataBinding.acmOnBoardingCountryCodes.clear()
             } else {
-                countryCode = countriesAdapter.getItem(0)
+                val countryCode = countryAdapter.getItem(0)
                 dataBinding.acmOnBoardingCountryCodes.setText(countryCode.toString())
             }
             dataBinding.acmOnBoardingCountryCodes.adjustCursor()
@@ -107,15 +103,11 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      * @return true if the form is valid, otherwise returns false
      */
     private fun validateForm(): Boolean {
-        if(dataBinding.acmOnBoardingCountryCodes.isEmpty() ||
-                dataBinding.edtOnBoardingPhoneNumber.isEmpty() ||
-                countryCode == null) {
+        if(region.isEmpty() || phoneNumber.isEmpty()) {
             return false
         }
 
-        return onBoardingPresenter
-                .validatePhoneNumber(countryCode!!.region,
-                        dataBinding.edtOnBoardingPhoneNumber.text.toString())
+        return onBoardingPresenter.validatePhoneNumber(region, phoneNumber)
 
     }
 }

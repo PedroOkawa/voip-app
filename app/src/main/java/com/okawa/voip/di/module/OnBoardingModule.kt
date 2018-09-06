@@ -1,7 +1,7 @@
 package com.okawa.voip.di.module
 
-import com.okawa.voip.presenter.OnBoardingPresenter
-import com.okawa.voip.presenter.OnBoardingPresenterImpl
+import com.okawa.voip.presenter.onboarding.OnBoardingPresenter
+import com.okawa.voip.presenter.onboarding.OnBoardingPresenterImpl
 import dagger.Binds
 import dagger.Module
 

@@ -11,3 +11,5 @@ fun EditText.clear() {
 fun EditText.adjustCursor() {
     setSelection(text.length)
 }
+
+fun EditText.getTextString() = text.toString()
