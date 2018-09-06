@@ -15,10 +15,16 @@
     </style>
 
     <style name="AppTheme.Toolbar">
-        <item name="android:background">@color/colorPrimary</item>
+        <item name="android:background">@color/colorToolbar</item>
         <item name="android:theme">@style/ThemeOverlay.AppCompat.ActionBar</item>
         <item name="popupTheme">@style/ThemeOverlay.AppCompat.Light</item>
-        <item name="titleTextColor">@color/colorTextLight</item>
+        <item name="titleTextColor">@color/colorTextToolbar</item>
+    </style>
+
+    <style name="AppTheme.Navigation">
+        <item name="itemBackground">@color/colorBottomNavigationItemBackground</item>
+        <item name="itemIconTint">@color/colorBottomNavigationItemIcon</item>
+        <item name="itemTextColor">@color/colorBottomNavigationItemText</item>
     </style>
 
     <!-- TEXT BASE -->

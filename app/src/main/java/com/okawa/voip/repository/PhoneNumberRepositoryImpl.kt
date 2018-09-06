@@ -19,7 +19,7 @@ class PhoneNumberRepositoryImpl @Inject constructor() : PhoneNumberRepository {
     override fun retrieveCountryCodes(): List<CountryCode> {
         val supportedCallingCodes = phoneNumberUtil.supportedRegions
 
-        return supportedCallingCodes.map { region ->
+        return supportedCallingCodes.mapNotNull { region ->
             convertToCountryCode(region)
         }
     }
@@ -33,11 +33,11 @@ class PhoneNumberRepositoryImpl @Inject constructor() : PhoneNumberRepository {
      *
      * @return converted country code
      */
-    private fun convertToCountryCode(region: String?) : CountryCode {
+    private fun convertToCountryCode(region: String?) : CountryCode? {
         val locale = Locale.getDefault()
-        val code = phoneNumberUtil.getCountryCodeForRegion(region)
-        val name = if(region == null || region == UNKNOWN_REGION || region == PhoneNumberUtil.REGION_CODE_FOR_NON_GEO_ENTITY) NO_REGION else Locale(locale.language, region).displayCountry
-        return CountryCode(code, region!!, name)
+        val code = phoneNumberUtil.getCountryCodeForRegion(region ?: return null)
+        val name = if(region == UNKNOWN_REGION || region == PhoneNumberUtil.REGION_CODE_FOR_NON_GEO_ENTITY) NO_REGION else Locale(locale.language, region).displayCountry
+        return CountryCode(code, region, name)
     }
 
 }

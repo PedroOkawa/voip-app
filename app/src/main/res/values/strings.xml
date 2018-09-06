@@ -2,7 +2,7 @@
 
     <!-- COMMON -->
 
-    <string name="app_name">VoIP App</string>
+    <string name="app_name">VoIPApp</string>
 
     <!-- ON BOARDING -->
 
@@ -11,5 +11,15 @@
     <string name="on_boarding_phone_validation_country_hint">Country</string>
     <string name="on_boarding_phone_validation_phone_hint">Phone Number</string>
     <string name="on_boarding_phone_validation_button">Proceed</string>
+
+    <!-- MAIN -->
+
+    <string name="main_toolbar_title">@string/app_name</string>
+
+    <!-- MAIN MENU -->
+
+    <string name="main_menu_contacts">Contacts</string>
+    <string name="main_menu_history">History</string>
+    <string name="main_menu_settings">Settings</string>
 
 </resources>

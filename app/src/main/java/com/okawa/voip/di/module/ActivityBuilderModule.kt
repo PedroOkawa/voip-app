@@ -15,7 +15,7 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [ OnBoardingModule::class ])
     abstract fun contributesOnBoardingActivity(): OnBoardingActivity
 
-    @ContributesAndroidInjector()
+    @ContributesAndroidInjector(modules = [ FragmentBuilderModule::class ])
     abstract fun contributesMainActivity(): MainActivity
 
 }

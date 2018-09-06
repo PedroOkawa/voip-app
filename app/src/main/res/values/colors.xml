@@ -8,11 +8,13 @@
     <color name="colorAccent">@color/colorYellowD9AB4E</color>
     <color name="colorWindow">@color/colorWhiteF4F7F9</color>
     <color name="colorWindowSplash">@color/colorBlue375A7E</color>
+    <color name="colorToolbar">@color/colorPrimary</color>
 
     <!-- TEXT -->
 
-    <color name="colorTextLight">@color/colorWhiteDFDFDF</color>
+    <color name="colorTextLight">@color/colorWhiteFFFFFF</color>
     <color name="colorTextDark">@color/colorBlue364D64</color>
+    <color name="colorTextToolbar">@color/colorTextLight</color>
 
     <!-- BUTTON -->
 
@@ -25,6 +27,12 @@
     <color name="colorButtonDisabledStart">@color/colorGreyB1B1B1</color>
     <color name="colorButtonDisabledEnd">@color/colorGrey8F8F8F</color>
 
+    <!-- BOTTOM NAVIGATION -->
+
+    <color name="colorBottomNavigationItemBackground">@color/colorPrimary</color>
+    <color name="colorBottomNavigationItemIcon">@color/colorWhiteFFFFFF</color>
+    <color name="colorBottomNavigationItemText">@color/colorWhiteFFFFFF</color>
+
     <!-- BASE COLORS -->
 
     <color name="colorBlue364D64">#364D64</color>
@@ -32,7 +40,7 @@
     <color name="colorBlue375A7E">#375A7E</color>
     <color name="colorGreyB1B1B1">#B1B1B1</color>
     <color name="colorGrey8F8F8F">#8F8F8F</color>
-    <color name="colorWhiteDFDFDF">#DFDFDF</color>
+    <color name="colorWhiteFFFFFF">#FFFFFF</color>
     <color name="colorWhiteF4F7F9">#F4F7F9</color>
     <color name="colorYellowD9AB4E">#D9AB4E</color>
 
