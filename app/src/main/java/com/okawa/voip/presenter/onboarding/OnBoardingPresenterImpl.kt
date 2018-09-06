@@ -2,7 +2,7 @@ package com.okawa.voip.presenter.onboarding
 
 import android.content.Context
 import com.okawa.voip.model.CountryCode
-import com.okawa.voip.repository.PhoneNumberRepository
+import com.okawa.voip.repository.phone.PhoneNumberRepository
 import com.okawa.voip.repository.account.AccountRepository
 import javax.inject.Inject
 

@@ -1,7 +1,7 @@
 package com.okawa.voip
 
-import com.okawa.voip.repository.PhoneNumberRepository
-import com.okawa.voip.repository.PhoneNumberRepositoryImpl
+import com.okawa.voip.repository.phone.PhoneNumberRepository
+import com.okawa.voip.repository.phone.PhoneNumberRepositoryImpl
 import org.junit.Test
 
 import org.junit.Assert.*

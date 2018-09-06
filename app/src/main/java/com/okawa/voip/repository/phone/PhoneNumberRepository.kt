@@ -1,4 +1,4 @@
-package com.okawa.voip.repository
+package com.okawa.voip.repository.phone
 
 import com.okawa.voip.model.CountryCode
 

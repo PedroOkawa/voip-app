@@ -9,8 +9,10 @@ import android.support.v4.content.Loader
 import android.util.Log
 import com.okawa.voip.R
 import com.okawa.voip.databinding.FragmentContactsBinding
+import com.okawa.voip.presenter.contacts.ContactsPresenter
 import com.okawa.voip.ui.base.BaseFragment
 import com.okawa.voip.utils.CursorUtils
+import javax.inject.Inject
 
 class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.LoaderCallbacks<Cursor> {
 
@@ -24,6 +26,9 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         }
     }
 
+    @Inject
+    lateinit var contactsPresenter: ContactsPresenter
+
     override fun layoutToInflate() = R.layout.fragment_contacts
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -31,44 +36,25 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         initLoaderManager()
     }
 
-    override fun doOnCreated() {
-
-    }
-
-    override fun onCreateLoader(queryId: Int, args: Bundle?): Loader<Cursor> {
-        /*
-        return when(queryId) {
-            ADD_CONTACT_QUERY_ID -> {
-
-            }
-            REMOVE_CONTACT_QUERY_ID -> {
-
-            }
-            LIST_CONTACTS_QUERY_ID -> {
-            */
-                //activity?.let {
-                    return CursorLoader(activity!!,
-                            ContactsContract.Data.CONTENT_URI,
-                            CursorUtils.PROJECTION,
-                            CursorUtils.SELECTION,
-                            CursorUtils.SELECTION_ARGUMENTS,
-                            CursorUtils.SORT_ORDER)
-                //}
-        /*
-            }
-            else -> {  }
-        }
-
-        return null
-        */
+    override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
+        return CursorLoader(context!!,
+                ContactsContract.Data.CONTENT_URI,
+                CursorUtils.PROJECTION,
+                CursorUtils.SELECTION,
+                CursorUtils.SELECTION_ARGUMENTS,
+                CursorUtils.SORT_ORDER)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        Log.w("TEST", "DATA: $data")
+        
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
 
+    }
+
+    override fun doOnCreated() {
+        initLoaderManager()
     }
 
     private fun initLoaderManager() {
