@@ -1,4 +1,4 @@
-package com.okawa.voip
+package com.okawa.voip.utils.mapper
 
 import android.database.Cursor
 import android.graphics.BitmapFactory
@@ -19,7 +19,7 @@ class ContactMapper @Inject constructor() {
         val nameColumnId = cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)
         val photoColumnId = cursor.getColumnIndex(ContactsContract.Contacts.Photo.PHOTO)
 
-        val name = cursor.getString(nameColumnId) ?: ""
+        val name = cursor.getString(nameColumnId) ?: "Unknown"
         val photoData: ByteArray? = cursor.getBlob(photoColumnId)
         val photoBitmap = if(photoData != null) BitmapFactory.decodeByteArray(photoData, 0, photoData.size) else null
 

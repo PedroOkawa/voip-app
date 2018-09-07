@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="placeholder"
+            type="int"/>
+        <variable
+            name="image"
+            type="android.graphics.Bitmap"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical"
+        android:layout_margin="4dp">
+
+        <ImageView
+            android:id="@+id/imgHistoryPhoto"
+            android:layout_width="@dimen/contacts_list_image_size"
+            android:layout_height="@dimen/contacts_list_image_size"
+            android:layout_margin="@dimen/contacts_list_image_margin"
+            bind:placeholder="@{placeholder}"
+            bind:circleImage="@{image}"/>
+
+        <LinearLayout
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                style="@style/AppTheme.Text.SubtitleOne.Bold"
+                android:id="@+id/txtHistoryName"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/AppTheme.Text.SubtitleOne.Bold"
+                android:id="@+id/txtHistoryNumber"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                style="@style/AppTheme.Text.SubtitleOne.Bold"
+                android:id="@+id/txtHistoryDate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+</layout>

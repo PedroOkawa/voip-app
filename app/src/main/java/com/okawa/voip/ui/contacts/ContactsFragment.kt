@@ -13,10 +13,8 @@ import com.okawa.voip.presenter.contacts.ContactsPresenter
 import com.okawa.voip.repository.contacts.ListContactsSuccess
 import com.okawa.voip.repository.status.Result
 import com.okawa.voip.ui.base.BaseFragment
-import com.okawa.voip.utils.CursorUtils
+import com.okawa.voip.utils.utils.CursorUtils
 import com.okawa.voip.utils.adapter.ContactAdapter
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.LoaderCallbacks<Cursor> {
@@ -24,7 +22,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     companion object {
         const val ADD_CONTACT_QUERY_ID = 0x0000
         const val REMOVE_CONTACT_QUERY_ID = 0x0001
-        const val LIST_CONTACTS_QUERY_ID = 0x0002
+        const val CONTACTS_QUERY_ID = 0x0002
 
         fun newInstance(): ContactsFragment {
             return ContactsFragment()
@@ -47,10 +45,10 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     override fun onCreateLoader(id: Int, args: Bundle?): Loader<Cursor> {
         return CursorLoader(context!!,
                 ContactsContract.Data.CONTENT_URI,
-                CursorUtils.PROJECTION,
-                CursorUtils.SELECTION_CLAUSE,
-                CursorUtils.SELECTION_ARGUMENTS,
-                CursorUtils.SORT_ORDER)
+                CursorUtils.Contacts.PROJECTION,
+                CursorUtils.Contacts.SELECTION_CLAUSE,
+                CursorUtils.Contacts.SELECTION_ARGUMENTS,
+                CursorUtils.Contacts.SORT_ORDER)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor?) {
@@ -75,7 +73,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     }
 
     private fun initLoaderManager() {
-        loaderManager.initLoader(LIST_CONTACTS_QUERY_ID, null, this)
+        loaderManager.initLoader(CONTACTS_QUERY_ID, null, this)
     }
 
     private fun handleResult(result: Result) {
