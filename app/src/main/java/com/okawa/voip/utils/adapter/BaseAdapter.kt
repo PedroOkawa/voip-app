@@ -7,7 +7,7 @@ abstract class BaseAdapter<T, VH : RecyclerView.ViewHolder> :  RecyclerView.Adap
     private val data = ArrayList<T>()
 
     override fun getItemCount(): Int {
-        return data.size ?: 0
+        return data.size
     }
 
     fun setData(data: Collection<T>?) {

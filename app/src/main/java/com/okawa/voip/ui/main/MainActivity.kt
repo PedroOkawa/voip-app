@@ -1,5 +1,6 @@
 package com.okawa.voip.ui.main
 
+import android.support.annotation.IdRes
 import com.okawa.voip.R
 import com.okawa.voip.databinding.ActivityMainBinding
 import com.okawa.voip.ui.base.BaseActivity
@@ -15,7 +16,8 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
 
     override fun doOnCreated() {
         initToolbar()
-        inflateInitialFragment()
+        initBottomNavigation()
+        inflateFragment()
     }
 
     /**
@@ -26,7 +28,18 @@ class MainActivity : BaseActivity<ActivityMainBinding>() {
         setTitle(R.string.main_toolbar_title)
     }
 
-    private fun inflateInitialFragment() {
-        callManager.contacts(supportFragmentManager, R.id.frmMainContent)
+    private fun initBottomNavigation() {
+        dataBinding.btmMainNavigation.setOnNavigationItemSelectedListener { menuItem ->
+            inflateFragment(menuItem.itemId)
+            return@setOnNavigationItemSelectedListener true
+        }
+    }
+
+    private fun inflateFragment(@IdRes menuItemId: Int = R.id.action_contacts) {
+        when (menuItemId) {
+            R.id.action_contacts -> callManager.contacts(supportFragmentManager, R.id.frmMainContent)
+            R.id.action_history -> callManager.history(supportFragmentManager, R.id.frmMainContent)
+            R.id.action_settings -> callManager.settings(supportFragmentManager, R.id.frmMainContent)
+        }
     }
 }

@@ -5,7 +5,7 @@ import android.provider.ContactsContract
 object CursorUtils {
     val PROJECTION = arrayOf(
             ContactsContract.Data.DISPLAY_NAME,
-            ContactsContract.Data.PHOTO_URI
+            ContactsContract.Contacts.Photo.PHOTO
     )
 
     val SELECTION_ARGUMENTS = null

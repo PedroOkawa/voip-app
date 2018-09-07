@@ -2,16 +2,12 @@ package com.okawa.voip.utils.account
 
 import android.accounts.Account
 import android.accounts.AccountManager
-import android.annotation.SuppressLint
 import android.content.Context
 import android.os.Build
 import com.okawa.voip.R
-import io.reactivex.subjects.PublishSubject
 import javax.inject.Inject
 
 class AccountUtils @Inject constructor() {
-
-    private val removeSubject = PublishSubject.create<Boolean>()
 
     /**
      * Stores the account on account manager
@@ -20,16 +16,14 @@ class AccountUtils @Inject constructor() {
      * @param token authentication token
      * @param listener to be invoked when account is added
      */
-    @SuppressLint("CheckResult")
     fun storeAccount(context: Context, token: String, listener: () -> Unit) {
         val accountManager = AccountManager.get(context)
-        removeSubject.subscribe {
+        clearAccounts(context) {
             val account = Account(context.getString(R.string.app_name), context.packageName)
             accountManager.addAccountExplicitly(account, "", null)
             accountManager.setAuthToken(account, context.packageName, token)
             listener.invoke()
         }
-        clearAccounts(context)
     }
 
     /**
@@ -58,21 +52,21 @@ class AccountUtils @Inject constructor() {
      *
      * @param context used to retrieve the account manager
      */
-    private fun clearAccounts(context: Context) {
+    private fun clearAccounts(context: Context, listener: () -> Unit) {
         val accountManager = AccountManager.get(context)
         val accounts = accountManager.getAccountsByType(context.packageName)
         if(accounts.isEmpty()) {
-            removeSubject.onNext(true)
+            listener.invoke()
             return
         }
         accounts.forEach { account ->
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP_MR1) {
                 accountManager.removeAccount(account, null, {
-                    validateAccountDeletion(context)
+                    validateAccountDeletion(context, listener)
                 }, null)
             } else {
                 accountManager.removeAccount(account, {
-                    validateAccountDeletion(context)
+                    validateAccountDeletion(context, listener)
                 }, null)
             }
         }
@@ -83,10 +77,10 @@ class AccountUtils @Inject constructor() {
      *
      * @param context used to retrieve the account manager
      */
-    private fun validateAccountDeletion(context: Context) {
+    private fun validateAccountDeletion(context: Context, listener: () -> Unit) {
         val accountManager = AccountManager.get(context)
         if(accountManager.accounts.isEmpty()) {
-            removeSubject.onNext(true)
+            listener.invoke()
         }
     }
 

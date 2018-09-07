@@ -9,8 +9,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import dagger.android.support.AndroidSupportInjection
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
 
 abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
+
+    private val compositeDisposable = CompositeDisposable()
 
     protected lateinit var dataBinding: T
 
@@ -37,6 +41,7 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
             defineDataBinding(inflater, container)
 
     override fun onDestroyView() {
+        compositeDisposable.clear()
         dataBinding.unbind()
         super.onDestroyView()
     }
@@ -52,6 +57,10 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     private fun defineDataBinding(inflater: LayoutInflater, container: ViewGroup?): View {
         dataBinding = DataBindingUtil.inflate(inflater, layoutToInflate(), container, false)
         return dataBinding.root
+    }
+
+    protected fun enqueueObservable(disposable: Disposable) {
+        compositeDisposable.add(disposable)
     }
 
 }

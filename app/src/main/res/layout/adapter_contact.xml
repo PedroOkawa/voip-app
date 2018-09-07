@@ -1,16 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
-<layout xmlns:android="http://schemas.android.com/apk/res/android">
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="placeholder"
+            type="int"/>
+        <variable
+            name="image"
+            type="android.graphics.Bitmap"/>
+    </data>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical">
+        android:gravity="center_vertical"
+        android:layout_margin="4dp">
 
         <ImageView
             android:id="@+id/imgContactPhoto"
-            android:layout_width="64dp"
-            android:layout_height="64dp" />
+            android:layout_width="@dimen/contacts_list_image_size"
+            android:layout_height="@dimen/contacts_list_image_size"
+            android:layout_margin="@dimen/contacts_list_image_margin"
+            bind:placeholder="@{placeholder}"
+            bind:circleImage="@{image}"/>
 
         <TextView
             style="@style/AppTheme.Text.SubtitleOne.Bold"
