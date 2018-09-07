@@ -6,12 +6,14 @@ import android.provider.ContactsContract
 import android.support.v4.app.LoaderManager
 import android.support.v4.content.CursorLoader
 import android.support.v4.content.Loader
+import android.support.v7.widget.LinearLayoutManager
 import android.util.Log
 import com.okawa.voip.R
 import com.okawa.voip.databinding.FragmentContactsBinding
 import com.okawa.voip.presenter.contacts.ContactsPresenter
 import com.okawa.voip.ui.base.BaseFragment
 import com.okawa.voip.utils.CursorUtils
+import com.okawa.voip.utils.adapter.ContactAdapter
 import javax.inject.Inject
 
 class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.LoaderCallbacks<Cursor> {
@@ -26,10 +28,17 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         }
     }
 
+    private val contactAdapter = ContactAdapter()
+
     @Inject
     lateinit var contactsPresenter: ContactsPresenter
 
     override fun layoutToInflate() = R.layout.fragment_contacts
+
+    override fun doOnCreated() {
+        initRecyclerView()
+        initLoaderManager()
+    }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -40,21 +49,22 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         return CursorLoader(context!!,
                 ContactsContract.Data.CONTENT_URI,
                 CursorUtils.PROJECTION,
-                CursorUtils.SELECTION,
+                CursorUtils.SELECTION_CLAUSE,
                 CursorUtils.SELECTION_ARGUMENTS,
                 CursorUtils.SORT_ORDER)
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, data: Cursor?) {
-        
+        contactAdapter.setData(data)
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
 
     }
 
-    override fun doOnCreated() {
-        initLoaderManager()
+    private fun initRecyclerView() {
+        dataBinding.rclContactsContent.adapter = contactAdapter
+        dataBinding.rclContactsContent.layoutManager = LinearLayoutManager(context)
     }
 
     private fun initLoaderManager() {

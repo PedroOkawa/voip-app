@@ -4,16 +4,14 @@ import android.provider.ContactsContract
 
 object CursorUtils {
     val PROJECTION = arrayOf(
-            ContactsContract.Data.CONTACT_ID,
             ContactsContract.Data.DISPLAY_NAME,
-            ContactsContract.Data.MIMETYPE,
-            ContactsContract.Data.DATA1
+            ContactsContract.Data.PHOTO_URI
     )
 
-    val SELECTION_ARGUMENTS = arrayOf("")
+    val SELECTION_ARGUMENTS = null
 
-    const val SELECTION = "${ContactsContract.Data.LOOKUP_KEY} = ?"
+    val SELECTION_CLAUSE = null
 
-    const val SORT_ORDER = ContactsContract.Data.MIMETYPE
+    const val SORT_ORDER = ContactsContract.Data.DISPLAY_NAME
 
 }
