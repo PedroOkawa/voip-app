@@ -20,7 +20,7 @@ data class Contact(val id: String, val name: String, val number: String, val pho
         val CONTENT_URI: Uri = ContactsContract.Data.CONTENT_URI
 
         val PROJECTION = arrayOf(
-                ContactsContract.Data._ID,
+                ContactsContract.Data.CONTACT_ID,
                 ContactsContract.Data.DISPLAY_NAME,
                 ContactsContract.CommonDataKinds.Phone.NUMBER,
                 ContactsContract.Data.PHOTO_URI,

@@ -6,4 +6,6 @@ interface ContactsRepository {
 
     fun insertContact(name: String, number: String, photo: Uri?)
 
+    fun updateContact(id: String, name: String, photo: Uri?)
+
 }

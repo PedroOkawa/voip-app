@@ -1,14 +1,13 @@
 package com.okawa.voip.presenter.details
 
 import android.net.Uri
-import com.okawa.voip.model.CountryCode
 
 interface ContactDetailsPresenter {
 
-    fun retrieveCountries(listener: (List<CountryCode>) -> Unit)
-
-    fun validatePhoneNumber(region: String, phoneNumber: String) : Boolean
+    fun generateRandomVoIPAppNumber(): String
 
     fun insertContact(name: String, number: String, photo: Uri?)
+
+    fun updateContact(id: String?, name: String, photo: Uri?)
 
 }

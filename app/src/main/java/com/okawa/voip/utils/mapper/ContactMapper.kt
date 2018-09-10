@@ -20,7 +20,7 @@ class ContactMapper @Inject constructor() {
      * @return contact instance
      */
     fun convert(cursor: Cursor): Contact {
-        val contactIdColumnId = cursor.getColumnIndex(ContactsContract.Data._ID)
+        val contactIdColumnId = cursor.getColumnIndex(ContactsContract.Data.CONTACT_ID)
         val nameColumnId = cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)
         val numberColumnId = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
         val photoUriColumnId = cursor.getColumnIndex(ContactsContract.Data.PHOTO_URI)

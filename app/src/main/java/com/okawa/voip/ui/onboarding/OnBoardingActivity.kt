@@ -110,7 +110,7 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      * @return true if the form is valid, otherwise returns false
      */
     private fun validateForm(): Boolean {
-        if(region.isEmpty() || phoneNumber.isEmpty() || onBoardingPresenter.validatePhoneNumber(region, phoneNumber)) {
+        if(region.isEmpty() || phoneNumber.isEmpty() || !onBoardingPresenter.validatePhoneNumber(region, phoneNumber)) {
             Toast.makeText(this@OnBoardingActivity, R.string.on_boarding_error_invalid_phone, Toast.LENGTH_SHORT).show()
             return false
         }

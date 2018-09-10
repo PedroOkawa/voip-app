@@ -73,18 +73,6 @@
                             android:lines="1"
                             android:imeOptions="actionNext"/>
 
-                        <AutoCompleteTextView
-                            style="@style/AppTheme.Text.SubtitleOne"
-                            android:id="@+id/acmCreateContactCountryCodes"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/contact_details_item_margin"
-                            android:layout_marginEnd="@dimen/contact_details_item_margin"
-                            android:ellipsize="end"
-                            android:hint="@string/phone_validation_country_hint"
-                            android:singleLine="true"
-                            android:imeOptions="actionNext"/>
-
                         <EditText
                             style="@style/AppTheme.Text.SubtitleOne"
                             android:id="@+id/edtCreateContactPhoneNumber"
@@ -97,6 +85,7 @@
                             android:digits="0123456789"
                             android:inputType="phone"
                             android:lines="1"
+                            android:enabled="false"
                             android:imeOptions="actionDone"/>
 
                     </LinearLayout>

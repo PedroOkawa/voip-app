@@ -3,18 +3,15 @@ package com.okawa.voip.ui.details
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
+import android.os.Bundle
 import android.view.MenuItem
 import android.widget.Toast
 import com.okawa.voip.R
 import com.okawa.voip.databinding.ActivityContactDetailsBinding
-import com.okawa.voip.model.CountryCode
+import com.okawa.voip.model.Contact
 import com.okawa.voip.presenter.details.ContactDetailsPresenter
 import com.okawa.voip.ui.base.BaseActivity
-import com.okawa.voip.utils.adapter.CountryAdapter
-import com.okawa.voip.utils.extensions.adjustCursor
-import com.okawa.voip.utils.extensions.clear
 import com.okawa.voip.utils.extensions.getTextString
-import com.okawa.voip.utils.extensions.isEmpty
 import com.okawa.voip.utils.manager.CallManager
 import javax.inject.Inject
 
@@ -22,6 +19,7 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
 
     companion object {
         private const val REQUEST_CODE_IMAGE = 0x00bb
+
         const val BUNDLE_CONTACTS = "contacts"
     }
 
@@ -31,20 +29,9 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
     @Inject
     lateinit var callManager: CallManager
 
+    private var contact: Contact? = null
+
     private var photo:Uri? = null
-
-    private val countryAdapter: CountryAdapter by lazy {
-        CountryAdapter(this)
-    }
-
-    private val countryCodes = ArrayList<CountryCode>()
-
-    private val region: String
-        get() {
-            return countryCodes.firstOrNull {
-                it.name == dataBinding.acmCreateContactCountryCodes.getTextString()
-            }?.region ?: ""
-        }
 
     private val name: String
         get() {
@@ -58,10 +45,19 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
 
     override fun layoutToInflate() = R.layout.activity_contact_details
 
+    override fun doOnRestoreInstance(savedInstanceState: Bundle) {
+        contact = savedInstanceState.getParcelable(BUNDLE_CONTACTS)
+    }
+
+    override fun doOnSaveInstance(outState: Bundle) {
+        outState.putParcelable(BUNDLE_CONTACTS, contact)
+    }
+
     override fun doOnCreated() {
+        retrieveContact()
         initToolbar()
         initAddPhotoButton()
-        initCountriesView()
+        defineInitialValues()
         initSaveButton()
     }
 
@@ -82,6 +78,10 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
         }
     }
 
+    private fun retrieveContact() {
+        contact = intent.getParcelableExtra(BUNDLE_CONTACTS)
+    }
+
     /**
      * Initializes the toolbar
      */
@@ -99,51 +99,36 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
     }
 
     /**
-     * Initializes the countries auto complete edit text
-     */
-    private fun initCountriesView() {
-        contactDetailsPresenter.retrieveCountries {
-            countryCodes.addAll(it)
-            countryAdapter.addAll(countryCodes)
-        }
-
-        dataBinding.acmCreateContactCountryCodes.setAdapter(countryAdapter)
-        dataBinding.acmCreateContactCountryCodes.threshold = 1
-        dataBinding.acmCreateContactCountryCodes.setOnFocusChangeListener { _, hasFocus ->
-            if(!hasFocus) {
-                defineSearchText()
-            }
-        }
-    }
-
-    /**
      * Initializes the save button
      */
     private fun initSaveButton() {
         dataBinding.btnCreateContactSave.setOnClickListener {
-            defineSearchText()
             if(validateForm()) {
-                contactDetailsPresenter.insertContact(name, phoneNumber, photo)
+                if(contact != null && contact?.id != null) {
+                    contactDetailsPresenter.updateContact(contact?.id, name, photo)
+                } else {
+                    contactDetailsPresenter.insertContact(name, phoneNumber, photo)
+                }
                 finish()
             }
         }
     }
 
-    /**
-     * Clear the text or set the first and only item on adapter on country edit text,
-     * depending on content
-     */
-    private fun defineSearchText() {
-        if(!dataBinding.acmCreateContactCountryCodes.isEmpty()) {
-            if (countryAdapter.isEmpty) {
-                dataBinding.acmCreateContactCountryCodes.clear()
-            } else {
-                val countryCode = countryAdapter.getItem(0)
-                dataBinding.acmCreateContactCountryCodes.setText(countryCode.toString())
+    private fun defineInitialValues() {
+        if(contact != null) {
+            dataBinding.edtCreateContactName.setText(contact?.name)
+            contact?.photo?.let {
+                definePhoto(it)
             }
-            dataBinding.acmCreateContactCountryCodes.adjustCursor()
-            dataBinding.acmCreateContactCountryCodes.clearFocus()
         }
+
+        val number = if(contact != null) {
+            contact?.number
+        } else {
+            contactDetailsPresenter.generateRandomVoIPAppNumber()
+        }
+
+        dataBinding.edtCreateContactPhoneNumber.setText(number)
     }
 
     private fun definePhoto(uri: Uri) {
@@ -163,7 +148,7 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
             return false
         }
 
-        if(region.isEmpty() || phoneNumber.isEmpty() || !contactDetailsPresenter.validatePhoneNumber(region, phoneNumber)) {
+        if(phoneNumber.isEmpty()) {
             Toast.makeText(this@ContactDetailsActivity, R.string.create_contact_error_invalid_phone, Toast.LENGTH_SHORT).show()
             return false
         }
