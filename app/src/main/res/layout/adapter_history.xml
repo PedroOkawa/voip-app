@@ -28,7 +28,10 @@
                 android:id="@+id/imgHistoryPhoto"
                 android:layout_width="@dimen/contact_image_size"
                 android:layout_height="@dimen/contact_image_size"
-                android:layout_margin="@dimen/contact_image_margin"
+                android:layout_marginTop="@dimen/contact_image_margin_vertical"
+                android:layout_marginBottom="@dimen/contact_image_margin_vertical"
+                android:layout_marginStart="@dimen/contact_image_margin_start"
+                android:layout_marginEnd="@dimen/contact_image_margin_end"
                 bind:placeholder="@{@drawable/ic_contact_placeholder}"
                 bind:circleImage="@{image}"/>
 
@@ -45,13 +48,13 @@
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    style="@style/AppTheme.Text.SubtitleOne.Bold"
+                    style="@style/AppTheme.Text.SubtitleOne"
                     android:id="@+id/txtHistoryNumber"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />
 
                 <TextView
-                    style="@style/AppTheme.Text.SubtitleOne.Bold"
+                    style="@style/AppTheme.Text.SubtitleOne"
                     android:id="@+id/txtHistoryDate"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content" />

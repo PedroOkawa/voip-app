@@ -16,7 +16,6 @@ abstract class CursorBindingAdapter<T, K : ViewDataBinding> : BaseBindingAdapter
     }
 
     fun setCursor(cursor: Cursor?) {
-        this.cursor?.close()
         this.cursor = cursor
         notifyDataSetChanged()
     }
@@ -24,4 +23,6 @@ abstract class CursorBindingAdapter<T, K : ViewDataBinding> : BaseBindingAdapter
     override fun getItemCount(): Int {
         return if(cursor == null || (cursor?.isClosed == true)) 0 else cursor?.count ?: 0
     }
+
+    fun getCursor() = cursor
 }

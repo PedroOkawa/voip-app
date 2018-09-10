@@ -2,10 +2,11 @@ package com.okawa.voip.utils.manager
 
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.support.annotation.IdRes
 import android.support.v4.app.FragmentManager
 import com.okawa.voip.ui.contacts.ContactsFragment
-import com.okawa.voip.ui.create.CreateContactActivity
+import com.okawa.voip.ui.details.ContactDetailsActivity
 import com.okawa.voip.ui.history.HistoryFragment
 import com.okawa.voip.ui.main.MainActivity
 import com.okawa.voip.ui.onboarding.OnBoardingActivity
@@ -13,7 +14,7 @@ import com.okawa.voip.ui.settings.SettingsFragment
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.okawa.voip.R
-
+import com.okawa.voip.model.Contact
 
 @Singleton
 class CallManager @Inject constructor() {
@@ -57,9 +58,22 @@ class CallManager @Inject constructor() {
      *
      * @param context used to create the intent
      *
-     * @return CreateContactActivity intent
+     * @return ContactDetailsActivity intent
      */
-    fun createContact(context: Context) = Intent(context, CreateContactActivity::class.java)
+    fun createContact(context: Context) = Intent(context, ContactDetailsActivity::class.java)
+
+    /**
+     * Retrieves Intent based on Contact Details activity
+     *
+     * @param context used to create the intent
+     *
+     * @return ContactDetailsActivity intent
+     */
+    fun contactDetails(context: Context, contact: Contact): Intent {
+        val intent = Intent(context, ContactDetailsActivity::class.java)
+        intent.putExtra(ContactDetailsActivity.BUNDLE_CONTACTS, contact)
+        return intent
+    }
 
     /**
      * Retrieves Intent to retrieve images
@@ -71,7 +85,8 @@ class CallManager @Inject constructor() {
     fun images(context: Context): Intent {
         val intent = Intent()
         intent.type = IMAGES_INTENT_TYPE
-        intent.action = Intent.ACTION_GET_CONTENT
+        intent.action = Intent.ACTION_OPEN_DOCUMENT
+        intent.addCategory(Intent.CATEGORY_OPENABLE)
         return Intent.createChooser(intent, context.getString(R.string.picture_intent_title))
     }
 
@@ -106,3 +121,4 @@ class CallManager @Inject constructor() {
     }
 
 }
+

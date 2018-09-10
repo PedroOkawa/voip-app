@@ -8,19 +8,11 @@ import javax.inject.Inject
 
 class OnBoardingPresenterImpl @Inject constructor(private val accountRepository: AccountRepository, private val phoneNumberRepository: PhoneNumberRepository) : OnBoardingPresenter {
 
-    private val countryCodes: List<CountryCode> by lazy {
-        phoneNumberRepository.retrieveCountryCodes()
-    }
-
-    override fun retrieveRegion(countryName: String): String {
-        val countryCode = countryCodes.firstOrNull {  countryCode ->
-            countryCode.name == countryName
+    override fun retrieveCountries(listener: (List<CountryCode>) -> Unit) {
+        phoneNumberRepository.retrieveCountryCodes {
+            listener.invoke(it)
         }
-
-        return countryCode?.region ?: ""
     }
-
-    override fun retrieveCountries() = countryCodes.map { countryCode -> countryCode.name }
 
     override fun validatePhoneNumber(region: String, phoneNumber: String) = phoneNumberRepository.validateNumber(region, phoneNumber)
 

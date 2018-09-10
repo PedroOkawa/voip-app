@@ -1,6 +1,6 @@
 package com.okawa.voip.di.module
 
-import com.okawa.voip.utils.HistoryProvider
+import com.okawa.voip.utils.VoIPAppProvider
 import dagger.Module
 import dagger.android.ContributesAndroidInjector
 
@@ -8,6 +8,6 @@ import dagger.android.ContributesAndroidInjector
 abstract class ProviderBuilderModule {
 
     @ContributesAndroidInjector
-    abstract fun contributesHistoryProvider(): HistoryProvider
+    abstract fun contributesHistoryProvider(): VoIPAppProvider
 
 }

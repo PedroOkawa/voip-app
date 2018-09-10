@@ -11,14 +11,14 @@ import com.okawa.voip.utils.executors.AppExecutors
 import com.okawa.voip.utils.extensions.toInt
 import com.okawa.voip.utils.mapper.ContactMapper
 import com.okawa.voip.utils.mapper.HistoryMapper
-import java.io.ByteArrayOutputStream
-import java.io.IOException
-import java.io.InputStream
 import javax.inject.Inject
 import javax.inject.Singleton
+import com.okawa.voip.utils.utils.BitmapUtils
+import java.io.FileNotFoundException
+
 
 @Singleton
-class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors, private val application: Application, private val contactMapper: ContactMapper, private val historyMapper: HistoryMapper) {
+class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors, private val application: Application, private val bitmapUtils: BitmapUtils, private val contactMapper: ContactMapper, private val historyMapper: HistoryMapper) {
 
     companion object {
         const val VOIP_APP_SUFFIX = "VoIPApp"
@@ -32,8 +32,12 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
             val operations = ArrayList<ContentProviderOperation>()
             var photoBlob: ByteArray? = null
             contact.photo?.let {
-                val inputStream = application.contentResolver.openInputStream(contact.photo)
-                photoBlob = getBytes(inputStream)
+                try {
+                    val contentResolver = application.contentResolver
+                    photoBlob = bitmapUtils.convertCompact(contentResolver.openInputStream(it))
+                } catch (exception: FileNotFoundException) {
+                    exception.printStackTrace()
+                }
             }
 
             operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
@@ -53,7 +57,6 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                     .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE)
                     .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, contact.name)
-                    .withValue(ContactsContract.CommonDataKinds.StructuredName.GIVEN_NAME, contact.name)
                     .build())
 
             operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI.buildUpon()
@@ -97,20 +100,6 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
 
             application.contentResolver.insert(History.CONTENT_URI, contentValues)
         }
-    }
-
-    @Throws(IOException::class)
-    fun getBytes(inputStream: InputStream): ByteArray {
-        val byteBuffer = ByteArrayOutputStream()
-        val bufferSize = 1024
-        val buffer = ByteArray(bufferSize)
-
-        var len = -1
-        while (len != -1) {
-            len = inputStream.read(buffer)
-            byteBuffer.write(buffer, 0, len)
-        }
-        return byteBuffer.toByteArray()
     }
 
 }

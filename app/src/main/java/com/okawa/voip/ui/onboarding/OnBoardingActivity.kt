@@ -3,6 +3,7 @@ package com.okawa.voip.ui.onboarding
 import android.widget.Toast
 import com.okawa.voip.R
 import com.okawa.voip.databinding.ActivityOnBoardingBinding
+import com.okawa.voip.model.CountryCode
 import com.okawa.voip.presenter.onboarding.OnBoardingPresenter
 import com.okawa.voip.ui.base.BaseActivity
 import com.okawa.voip.utils.adapter.CountryAdapter
@@ -21,19 +22,23 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
     @Inject
     lateinit var callManager: CallManager
 
+    private val countryAdapter: CountryAdapter by lazy {
+        CountryAdapter(this)
+    }
+
+    private val countryCodes = ArrayList<CountryCode>()
+
     private val region: String
         get() {
-            return onBoardingPresenter.retrieveRegion(dataBinding.acmOnBoardingCountryCodes.getTextString())
+            return countryCodes.firstOrNull {
+                it.name == dataBinding.acmOnBoardingCountryCodes.getTextString()
+            }?.region ?: ""
         }
 
     private val phoneNumber: String
         get() {
             return dataBinding.edtOnBoardingPhoneNumber.getTextString()
         }
-
-    private val countryAdapter: CountryAdapter by lazy {
-        CountryAdapter(this, onBoardingPresenter.retrieveCountries())
-    }
 
     override fun layoutToInflate() = R.layout.activity_on_boarding
 
@@ -55,10 +60,14 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      * Initializes the countries auto complete edit text
      */
     private fun initCountriesView() {
+        onBoardingPresenter.retrieveCountries {
+            countryCodes.addAll(it)
+            countryAdapter.addAll(countryCodes)
+        }
         dataBinding.acmOnBoardingCountryCodes.setAdapter(countryAdapter)
         dataBinding.acmOnBoardingCountryCodes.threshold = 1
         dataBinding.acmOnBoardingCountryCodes.setOnFocusChangeListener { _, hasFocus ->
-            if(!hasFocus) {
+            if (!hasFocus) {
                 defineSearchText()
             }
         }
@@ -74,8 +83,6 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
                 onBoardingPresenter.storeAccount(this@OnBoardingActivity, phoneNumber) {
                     startActivity(callManager.main(this@OnBoardingActivity))
                 }
-            } else {
-                Toast.makeText(this@OnBoardingActivity, R.string.on_boarding_error_invalid_phone, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -103,10 +110,11 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
      * @return true if the form is valid, otherwise returns false
      */
     private fun validateForm(): Boolean {
-        if(region.isEmpty() || phoneNumber.isEmpty()) {
+        if(region.isEmpty() || phoneNumber.isEmpty() || onBoardingPresenter.validatePhoneNumber(region, phoneNumber)) {
+            Toast.makeText(this@OnBoardingActivity, R.string.on_boarding_error_invalid_phone, Toast.LENGTH_SHORT).show()
             return false
         }
 
-        return onBoardingPresenter.validatePhoneNumber(region, phoneNumber)
+        return true
     }
 }

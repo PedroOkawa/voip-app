@@ -2,10 +2,11 @@ package com.okawa.voip.repository.phone
 
 import com.google.i18n.phonenumbers.PhoneNumberUtil
 import com.okawa.voip.model.CountryCode
+import com.okawa.voip.utils.executors.AppExecutors
 import java.util.Locale
 import javax.inject.Inject
 
-class PhoneNumberRepositoryImpl @Inject constructor() : PhoneNumberRepository {
+class PhoneNumberRepositoryImpl @Inject constructor(private val appExecutors: AppExecutors) : PhoneNumberRepository {
 
     companion object {
 
@@ -16,11 +17,11 @@ class PhoneNumberRepositoryImpl @Inject constructor() : PhoneNumberRepository {
 
     private val phoneNumberUtil = PhoneNumberUtil.getInstance()
 
-    override fun retrieveCountryCodes(): List<CountryCode> {
-        val supportedCallingCodes = phoneNumberUtil.supportedRegions
-
-        return supportedCallingCodes.mapNotNull { region ->
-            convertToCountryCode(region)
+    override fun retrieveCountryCodes(listener: (List<CountryCode>) -> Unit) {
+        appExecutors.getDiskIO().execute {
+            listener.invoke(phoneNumberUtil.supportedRegions.mapNotNull { region ->
+                convertToCountryCode(region)
+            })
         }
     }
 

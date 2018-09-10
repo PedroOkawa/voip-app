@@ -7,7 +7,7 @@ interface PhoneNumberRepository {
     /**
      * Retrieves all possible country codes
      */
-    fun retrieveCountryCodes() : List<CountryCode>
+    fun retrieveCountryCodes(listener: (List<CountryCode>) -> Unit)
 
     /**
      * Validates the requested phone number

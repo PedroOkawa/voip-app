@@ -33,11 +33,7 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
     override fun layoutToInflate() = R.layout.activity_splash
 
     override fun doOnCreated() {
-        if(permissionUtils.checkPermissions(this, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)) {
-            openNextActivity()
-        } else {
-            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS), REQUEST_CODE_CONTACTS_PERMISSIONS)
-        }
+        requestPermissions()
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
@@ -53,6 +49,14 @@ class SplashActivity : BaseActivity<ActivitySplashBinding>() {
         }
 
         finishApp()
+    }
+
+    private fun requestPermissions() {
+        if(permissionUtils.checkPermissions(this, Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)) {
+            openNextActivity()
+        } else {
+            ActivityCompat.requestPermissions(this, arrayOf(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS), REQUEST_CODE_CONTACTS_PERMISSIONS)
+        }
     }
 
     private fun openNextActivity() {

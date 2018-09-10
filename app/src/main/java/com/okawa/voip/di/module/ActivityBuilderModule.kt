@@ -1,6 +1,6 @@
 package com.okawa.voip.di.module
 
-import com.okawa.voip.ui.create.CreateContactActivity
+import com.okawa.voip.ui.details.ContactDetailsActivity
 import com.okawa.voip.ui.main.MainActivity
 import com.okawa.voip.ui.onboarding.OnBoardingActivity
 import com.okawa.voip.ui.splash.SplashActivity
@@ -19,7 +19,7 @@ abstract class ActivityBuilderModule {
     @ContributesAndroidInjector(modules = [ FragmentBuilderModule::class ])
     abstract fun contributesMainActivity(): MainActivity
 
-    @ContributesAndroidInjector(modules = [ CreateContactModule::class ])
-    abstract fun contributesCreateContactActivity(): CreateContactActivity
+    @ContributesAndroidInjector(modules = [ ContactDetailsModule::class ])
+    abstract fun contributesCreateContactActivity(): ContactDetailsActivity
 
 }

@@ -1,14 +1,14 @@
-package com.okawa.voip.presenter.onboarding
+package com.okawa.voip.presenter.details
 
-import android.content.Context
+import android.net.Uri
 import com.okawa.voip.model.CountryCode
 
-interface OnBoardingPresenter {
+interface ContactDetailsPresenter {
 
     fun retrieveCountries(listener: (List<CountryCode>) -> Unit)
 
     fun validatePhoneNumber(region: String, phoneNumber: String) : Boolean
 
-    fun storeAccount(context: Context, token: String, listener: () -> Unit)
+    fun insertContact(name: String, number: String, photo: Uri?)
 
 }

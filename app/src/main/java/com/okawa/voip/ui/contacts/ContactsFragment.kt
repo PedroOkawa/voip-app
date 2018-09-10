@@ -10,6 +10,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.Menu
 import android.view.MenuInflater
 import android.view.MenuItem
+import android.widget.Toast
 import com.okawa.voip.R
 import com.okawa.voip.databinding.FragmentContactsBinding
 import com.okawa.voip.presenter.contacts.ContactsPresenter
@@ -95,7 +96,9 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         contactAdapter.setCursor(cursor)
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>) { }
+    override fun onLoaderReset(loader: Loader<Cursor>) {
+        contactAdapter.setCursor(null)
+    }
 
     private fun initTabLayout() {
         dataBinding.tblContactsFilter.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
@@ -118,8 +121,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     }
 
     private fun initRecyclerView() {
-        contactAdapter.defineTouchListener { contact ->
-            contactsPresenter.insertHistory(contact)
+        contactAdapter.defineTouchListener { actionType, contact ->
+            handleAction(actionType, contact)
         }
         dataBinding.rclContactsContent.adapter = contactAdapter
         dataBinding.rclContactsContent.layoutManager = LinearLayoutManager(context)
@@ -127,6 +130,9 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
 
     private fun retrieveInitialContent() {
         loaderManager.initLoader(ALL_CONTACTS_QUERY_ID, null, this)
+        if(loaderManager.getLoader<Cursor>(ALL_CONTACTS_QUERY_ID)?.isReset == true) {
+            retrieveAllContacts()
+        }
     }
 
     private fun retrieveAllContacts() {
@@ -142,6 +148,19 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
             retrieveAllContacts()
         } else {
             retrieveVoIPAppContacts()
+        }
+    }
+
+    private fun handleAction(actionType: Int, contact: Contact?) {
+        contact?.let {
+            if(actionType == ContactAdapter.ACTION_TYPE_CALL) {
+                Toast.makeText(context, context?.getString(R.string.contacts_called_message, contact.name), Toast.LENGTH_SHORT).show()
+                contactsPresenter.insertHistory(contact)
+            } else {
+                context?.let {
+                    startActivity(callManager.contactDetails(it, contact))
+                }
+            }
         }
     }
 }

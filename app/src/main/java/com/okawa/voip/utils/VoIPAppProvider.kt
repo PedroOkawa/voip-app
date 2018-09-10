@@ -10,7 +10,7 @@ import com.okawa.voip.model.History
 import dagger.android.AndroidInjection
 import javax.inject.Inject
 
-class HistoryProvider: ContentProvider() {
+class VoIPAppProvider: ContentProvider() {
 
     @Inject
     lateinit var databaseHelper: DatabaseHelper

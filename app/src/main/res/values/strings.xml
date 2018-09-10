@@ -23,16 +23,17 @@
 
     <!-- CONTACTS -->
 
+    <string name="contacts_called_message">Called to %s</string>
     <string name="contacts_menu_add_contact">Add Contact</string>
     <string name="contacts_filter_all">All</string>
     <string name="contacts_filter_voip_app">VoIP APP</string>
 
-    <!-- CREATE CONTACT -->
+    <!-- CONTACT DETAILS -->
 
-    <string name="create_contact_toolbar_title">New Contact</string>
-    <string name="create_contact_add_photo_button">Touch to\nadd Photo</string>
-    <string name="create_contact_name_hint">Name</string>
-    <string name="create_contact_save_button">Save</string>
+    <string name="contact_details_toolbar_title">New Contact</string>
+    <string name="contact_details_add_photo_button">Touch to\nadd Photo</string>
+    <string name="contact_details_name_hint">Name</string>
+    <string name="contact_details_save_button">Save</string>
 
     <!-- PHONE VALIDATION -->
 

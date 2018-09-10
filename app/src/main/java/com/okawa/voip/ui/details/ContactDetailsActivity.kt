@@ -1,4 +1,4 @@
-package com.okawa.voip.ui.create
+package com.okawa.voip.ui.details
 
 import android.app.Activity
 import android.content.Intent
@@ -6,8 +6,9 @@ import android.net.Uri
 import android.view.MenuItem
 import android.widget.Toast
 import com.okawa.voip.R
-import com.okawa.voip.databinding.ActivityCreateContactBinding
-import com.okawa.voip.presenter.create.CreateContactPresenter
+import com.okawa.voip.databinding.ActivityContactDetailsBinding
+import com.okawa.voip.model.CountryCode
+import com.okawa.voip.presenter.details.ContactDetailsPresenter
 import com.okawa.voip.ui.base.BaseActivity
 import com.okawa.voip.utils.adapter.CountryAdapter
 import com.okawa.voip.utils.extensions.adjustCursor
@@ -17,23 +18,32 @@ import com.okawa.voip.utils.extensions.isEmpty
 import com.okawa.voip.utils.manager.CallManager
 import javax.inject.Inject
 
-class CreateContactActivity : BaseActivity<ActivityCreateContactBinding>() {
+class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
 
     companion object {
         private const val REQUEST_CODE_IMAGE = 0x00bb
+        const val BUNDLE_CONTACTS = "contacts"
     }
 
     @Inject
-    lateinit var createContactPresenter: CreateContactPresenter
+    lateinit var contactDetailsPresenter: ContactDetailsPresenter
 
     @Inject
     lateinit var callManager: CallManager
 
     private var photo:Uri? = null
 
+    private val countryAdapter: CountryAdapter by lazy {
+        CountryAdapter(this)
+    }
+
+    private val countryCodes = ArrayList<CountryCode>()
+
     private val region: String
         get() {
-            return createContactPresenter.retrieveRegion(dataBinding.acmCreateContactCountryCodes.getTextString())
+            return countryCodes.firstOrNull {
+                it.name == dataBinding.acmCreateContactCountryCodes.getTextString()
+            }?.region ?: ""
         }
 
     private val name: String
@@ -46,11 +56,7 @@ class CreateContactActivity : BaseActivity<ActivityCreateContactBinding>() {
             return dataBinding.edtCreateContactPhoneNumber.getTextString()
         }
 
-    private val countryAdapter: CountryAdapter by lazy {
-        CountryAdapter(this, createContactPresenter.retrieveCountries())
-    }
-
-    override fun layoutToInflate() = R.layout.activity_create_contact
+    override fun layoutToInflate() = R.layout.activity_contact_details
 
     override fun doOnCreated() {
         initToolbar()
@@ -81,14 +87,14 @@ class CreateContactActivity : BaseActivity<ActivityCreateContactBinding>() {
      */
     private fun initToolbar() {
         setSupportActionBar(dataBinding.tlbCreateContactToolbar)
-        setTitle(R.string.create_contact_toolbar_title)
+        setTitle(R.string.contact_details_toolbar_title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
     private fun initAddPhotoButton() {
         dataBinding.btnCreateContactPhoto.setOnClickListener {
-            startActivityForResult(callManager.images(this@CreateContactActivity), REQUEST_CODE_IMAGE)
+            startActivityForResult(callManager.images(this@ContactDetailsActivity), REQUEST_CODE_IMAGE)
         }
     }
 
@@ -96,6 +102,11 @@ class CreateContactActivity : BaseActivity<ActivityCreateContactBinding>() {
      * Initializes the countries auto complete edit text
      */
     private fun initCountriesView() {
+        contactDetailsPresenter.retrieveCountries {
+            countryCodes.addAll(it)
+            countryAdapter.addAll(countryCodes)
+        }
+
         dataBinding.acmCreateContactCountryCodes.setAdapter(countryAdapter)
         dataBinding.acmCreateContactCountryCodes.threshold = 1
         dataBinding.acmCreateContactCountryCodes.setOnFocusChangeListener { _, hasFocus ->
@@ -112,10 +123,8 @@ class CreateContactActivity : BaseActivity<ActivityCreateContactBinding>() {
         dataBinding.btnCreateContactSave.setOnClickListener {
             defineSearchText()
             if(validateForm()) {
-                createContactPresenter.insertContact(name, phoneNumber, photo)
+                contactDetailsPresenter.insertContact(name, phoneNumber, photo)
                 finish()
-            } else {
-                Toast.makeText(this@CreateContactActivity, R.string.on_boarding_error_invalid_phone, Toast.LENGTH_SHORT).show()
             }
         }
     }
@@ -150,12 +159,12 @@ class CreateContactActivity : BaseActivity<ActivityCreateContactBinding>() {
      */
     private fun validateForm(): Boolean {
         if(name.isEmpty()) {
-            Toast.makeText(this@CreateContactActivity, R.string.create_contact_error_invalid_name, Toast.LENGTH_SHORT).show()
+            Toast.makeText(this@ContactDetailsActivity, R.string.create_contact_error_invalid_name, Toast.LENGTH_SHORT).show()
             return false
         }
 
-        if(region.isEmpty() || phoneNumber.isEmpty() || !createContactPresenter.validatePhoneNumber(region, phoneNumber)) {
-            Toast.makeText(this@CreateContactActivity, R.string.create_contact_error_invalid_phone, Toast.LENGTH_SHORT).show()
+        if(region.isEmpty() || phoneNumber.isEmpty() || !contactDetailsPresenter.validatePhoneNumber(region, phoneNumber)) {
+            Toast.makeText(this@ContactDetailsActivity, R.string.create_contact_error_invalid_phone, Toast.LENGTH_SHORT).show()
             return false
         }
 

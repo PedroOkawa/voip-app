@@ -22,6 +22,9 @@ class HistoryAdapter(private val historyMapper: HistoryMapper) : CursorBindingAd
         holder.dataBinding?.txtHistoryDate?.text = convertDate(item?.date)
         holder.dataBinding?.image = item?.photo
         holder.dataBinding?.status = item?.isVoIPApp
+        holder.itemView.setOnClickListener {
+
+        }
     }
 
     private fun convertDate(date: Date?): String {
