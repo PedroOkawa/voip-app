@@ -15,4 +15,8 @@ class ContactsRepositoryImpl @Inject constructor(private val databaseManager: Da
         databaseManager.updateContact(id, name, photo)
     }
 
+    override fun deleteContact(id: String) {
+        databaseManager.deleteContact(id)
+    }
+
 }

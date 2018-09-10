@@ -33,6 +33,13 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
         application.packageName
     }
 
+    /**
+     * Inserts the contact based on the given data
+     *
+     * @param name contact name
+     * @param name contact number
+     * @param name contact photo
+     */
     fun insertContact(name: String, number: String, photo: Uri?) {
         appExecutors.getDiskIO().execute {
             val operations = ArrayList<ContentProviderOperation>()
@@ -45,11 +52,13 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
                 }
             }
 
+            /* RAW CONTACT */
             operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                     .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, name)
                     .withValue(ContactsContract.RawContacts.ACCOUNT_TYPE, packageName)
                     .build())
 
+            /* CONTACT */
             operations.add(ContentProviderOperation.newInsert(ContactsContract.Settings.CONTENT_URI.buildUpon()
                     .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build())
                     .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, name)
@@ -57,6 +66,7 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
                     .withValue(ContactsContract.Settings.UNGROUPED_VISIBLE, 1)
                     .build())
 
+            /* NAME */
             operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI.buildUpon()
                     .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build())
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -64,6 +74,7 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
                     .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
                     .build())
 
+            /* NUMBER */
             operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI.buildUpon()
                     .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build())
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -71,6 +82,7 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
                     .withValue(ContactsContract.CommonDataKinds.Phone.NUMBER, number)
                     .build())
 
+            /* PHOTO */
             operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI.buildUpon()
                     .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build())
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -78,6 +90,7 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
                     .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, photoBlob)
                     .build())
 
+            /* CUSTOM DATA */
             operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI.buildUpon()
                     .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build())
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
@@ -88,9 +101,72 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
                     .build())
 
             contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+
+            operations.clear()
         }
     }
 
+    /**
+     * Updates the contact based on the given id and data
+     *
+     * @param id contact data id
+     * @param name contact name
+     * @param name contact photo
+     */
+    fun updateContact(id: String, name: String, photo: Uri?) {
+        appExecutors.getDiskIO().execute {
+            val operations = ArrayList<ContentProviderOperation>()
+            var photoBlob: ByteArray? = null
+            photo?.let {
+                try {
+                    photoBlob = bitmapUtils.convertCompact(contentResolver.openInputStream(it))
+                } catch (exception: FileNotFoundException) {
+                    exception.printStackTrace()
+                }
+            }
+
+            /* NAME */
+            operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection("${ContactsContract.Data.CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?", arrayOf(id, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE))
+                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
+                    .build())
+
+            /* PHOTO */
+            operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
+                    .withSelection("${ContactsContract.Data.CONTACT_ID} = ? AND ${ContactsContract.Data.MIMETYPE} = ?", arrayOf(id, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE))
+                    .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, photoBlob)
+                    .build())
+
+            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+
+            operations.clear()
+        }
+    }
+
+    /**
+     * Deletes the contact based on the given id
+     *
+     * @param id contact data id
+     */
+    fun deleteContact(id: String) {
+        appExecutors.getDiskIO().execute {
+            val operations = ArrayList<ContentProviderOperation>()
+
+            operations.add(ContentProviderOperation.newDelete(ContactsContract.Data.CONTENT_URI)
+                    .withSelection("${ContactsContract.Data.CONTACT_ID} = ?", arrayOf(id))
+                    .build())
+
+            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+
+            operations.clear()
+        }
+    }
+
+    /**
+     * Inserts contact call to the History
+     *
+     * @param contact to be inserted to the call log
+     */
     fun insertHistory(contact: Contact) {
         appExecutors.getDiskIO().execute {
             val history = historyMapper.convert(contact)
@@ -104,48 +180,6 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
             contentValues.put(History.COLUMN_DATE, history.date.time)
 
             contentResolver.insert(History.CONTENT_URI, contentValues)
-        }
-    }
-
-    fun updateContact(id: String, name: String, photo: Uri?) {
-        appExecutors.getDiskIO().execute {
-            val operations = ArrayList<ContentProviderOperation>()
-            var photoBlob: ByteArray? = null
-            photo?.let {
-                try {
-                    photoBlob = bitmapUtils.convertCompact(contentResolver.openInputStream(it))
-                } catch (exception: FileNotFoundException) {
-                    exception.printStackTrace()
-                }
-            }
-
-
-            operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection("${ContactsContract.Data.CONTACT_ID} =? AND ${ContactsContract.Data.MIMETYPE} =?", arrayOf(id, ContactsContract.CommonDataKinds.StructuredName.CONTENT_ITEM_TYPE))
-                    .withValue(ContactsContract.CommonDataKinds.StructuredName.DISPLAY_NAME, name)
-                    .build())
-
-            operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection("${ContactsContract.Data.CONTACT_ID} =? AND ${ContactsContract.Data.MIMETYPE} =?", arrayOf(id, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE))
-                    .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, photoBlob)
-                    .build())
-
-            /*
-            operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(ContactsContract.Data.RAW_CONTACT_ID, arrayOf(id))
-                    .withExpectedCount(1)
-                    .withValue(ContactsContract.Data.DISPLAY_NAME, name)
-                    .build())
-                    */
-
-            /*
-            operations.add(ContentProviderOperation.newUpdate(ContactsContract.Data.CONTENT_URI)
-                    .withSelection(ContactsContract.Data.CONTACT_ID, arrayOf(id))
-                    .withValue(ContactsContract.Contacts.PHOTO, photoBlob)
-                    .build())
-                    */
-
-            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
         }
     }
 

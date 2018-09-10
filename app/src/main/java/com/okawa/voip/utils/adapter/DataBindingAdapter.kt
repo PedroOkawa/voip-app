@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import android.databinding.BindingAdapter
 import android.graphics.drawable.Drawable
 import android.net.Uri
-import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
 import android.view.View
 import android.widget.ImageView
@@ -34,6 +33,12 @@ object DataBindingAdapter {
     @BindingAdapter("bind:status")
     fun status(view: View, status: Boolean?) {
         view.setBackgroundColor(ContextCompat.getColor(view.context, if(status == true) R.color.colorStatusVoIP else R.color.colorStatusNotVoIP))
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind:actions")
+    fun actions(view: View, actions: Boolean?) {
+        view.visibility = if(actions == true) View.VISIBLE else View.GONE
     }
 
     /**

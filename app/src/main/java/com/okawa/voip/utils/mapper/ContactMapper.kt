@@ -3,7 +3,6 @@ package com.okawa.voip.utils.mapper
 import android.database.Cursor
 import android.net.Uri
 import android.provider.ContactsContract
-import android.util.Log
 import com.okawa.voip.db.DatabaseHelper
 import com.okawa.voip.model.Contact
 import javax.inject.Inject
@@ -24,7 +23,6 @@ class ContactMapper @Inject constructor() {
         val nameColumnId = cursor.getColumnIndex(ContactsContract.Data.DISPLAY_NAME)
         val numberColumnId = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Phone.NUMBER)
         val photoUriColumnId = cursor.getColumnIndex(ContactsContract.Data.PHOTO_URI)
-        val photoColumnId = cursor.getColumnIndex(ContactsContract.CommonDataKinds.Photo.PHOTO)
         val mimeTypeColumnId = cursor.getColumnIndex(ContactsContract.Data.MIMETYPE)
 
         val contactId = cursor.getString(contactIdColumnId)
@@ -33,12 +31,9 @@ class ContactMapper @Inject constructor() {
         val photoString = cursor.getString(photoUriColumnId)
         val photoUri = Uri.parse(photoString ?: "")
         val mimeType = cursor.getString(mimeTypeColumnId)
-        val test = cursor.getString(photoColumnId)
         val isVoIPApp = mimeType == DatabaseHelper.MIME_TYPE
 
         return Contact(contactId, name, number, photoUri, isVoIPApp)
     }
-
-    fun convert(name: String, number: String, photo: Uri?, isVoIPApp: Boolean) = Contact("0", name, number, photo, isVoIPApp)
 
 }

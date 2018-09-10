@@ -27,10 +27,14 @@
     <string name="contacts_menu_add_contact">Add Contact</string>
     <string name="contacts_filter_all">All</string>
     <string name="contacts_filter_voip_app">VoIP APP</string>
+    <string name="contacts_action_call">Call</string>
+    <string name="contacts_action_edit">Edit</string>
 
     <!-- CONTACT DETAILS -->
 
-    <string name="contact_details_toolbar_title">New Contact</string>
+    <string name="contact_details_menu_delete_contact">Delete Contact</string>
+    <string name="contact_details_add_toolbar_title">New Contact</string>
+    <string name="contact_details_edit_toolbar_title">Edit Contact</string>
     <string name="contact_details_add_photo_button">Touch to\nadd Photo</string>
     <string name="contact_details_name_hint">Name</string>
     <string name="contact_details_save_button">Save</string>

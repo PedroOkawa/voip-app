@@ -37,12 +37,6 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         }
     }
 
-    private var filterItemPosition: Int? = null
-
-    private val contactAdapter: ContactAdapter by lazy {
-        ContactAdapter(contactMapper)
-    }
-
     @Inject
     lateinit var callManager: CallManager
 
@@ -52,7 +46,11 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     @Inject
     lateinit var contactsPresenter: ContactsPresenter
 
-    override fun layoutToInflate() = R.layout.fragment_contacts
+    private var filterItemPosition: Int? = null
+
+    private val contactAdapter: ContactAdapter by lazy {
+        ContactAdapter(contactMapper)
+    }
 
     override fun onCreateOptionsMenu(menu: Menu?, inflater: MenuInflater?) {
         inflater?.inflate(R.menu.menu_action_contacts, menu)
@@ -67,6 +65,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         }
         return false
     }
+
+    override fun layoutToInflate() = R.layout.fragment_contacts
 
     override fun doOnCreated() {
         setHasOptionsMenu(true)
@@ -113,11 +113,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
             }
         })
 
-        filterItemPosition?.let {
-            if(it == VOIP_APP_CONTACTS_TAB_POSITION) {
-                dataBinding.tblContactsFilter.getTabAt(it)?.select()
-            }
-        }
+        restoreFilterItemSelection()
     }
 
     private fun initRecyclerView() {
@@ -129,18 +125,24 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     }
 
     private fun retrieveInitialContent() {
-        loaderManager.initLoader(ALL_CONTACTS_QUERY_ID, null, this)
-        if(loaderManager.getLoader<Cursor>(ALL_CONTACTS_QUERY_ID)?.isReset == true) {
+        if(loaderManager.getLoader<Cursor>(ALL_CONTACTS_QUERY_ID) != null) {
             retrieveAllContacts()
+        } else {
+            loaderManager.initLoader(ALL_CONTACTS_QUERY_ID, null, this)
         }
     }
 
     private fun retrieveAllContacts() {
-        loaderManager.restartLoader(ALL_CONTACTS_QUERY_ID, null, this)
+        loadData(ALL_CONTACTS_QUERY_ID)
     }
 
     private fun retrieveVoIPAppContacts() {
-        loaderManager.restartLoader(VOIP_APP_CONTACTS_QUERY_ID, null, this)
+        loadData(VOIP_APP_CONTACTS_QUERY_ID)
+    }
+
+    private fun loadData(queryId: Int) {
+        loaderManager.destroyLoader(if(queryId == ALL_CONTACTS_QUERY_ID) VOIP_APP_CONTACTS_QUERY_ID else ALL_CONTACTS_QUERY_ID)
+        loaderManager.restartLoader(queryId, null, this)
     }
 
     private fun handleFilter(position: Int) {
@@ -160,6 +162,14 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
                 context?.let {
                     startActivity(callManager.contactDetails(it, contact))
                 }
+            }
+        }
+    }
+
+    private fun restoreFilterItemSelection() {
+        filterItemPosition?.let {
+            if(it == VOIP_APP_CONTACTS_TAB_POSITION) {
+                dataBinding.tblContactsFilter.getTabAt(it)?.select()
             }
         }
     }

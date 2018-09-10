@@ -27,7 +27,14 @@ class HistoryAdapter(private val historyMapper: HistoryMapper) : CursorBindingAd
         }
     }
 
+    /**
+     * Converts the date to a displayable value (Hour : Minutes - Day Month)
+     *
+     * @param date call log date
+     *
+     * @return Displayable date
+     */
     private fun convertDate(date: Date?): String {
-        return SimpleDateFormat("dd MMM - HH:mm", Locale.getDefault()).format(date)
+        return SimpleDateFormat("HH:mm - dd MMM", Locale.getDefault()).format(date)
     }
 }

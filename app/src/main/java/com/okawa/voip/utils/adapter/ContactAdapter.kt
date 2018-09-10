@@ -31,25 +31,49 @@ class ContactAdapter(private val contactMapper: ContactMapper) : CursorBindingAd
         holder.dataBinding?.image = item?.photo
         holder.dataBinding?.status = item?.isVoIPApp
         holder.dataBinding?.actions = showActions(position)
+
         holder.dataBinding?.btnContactCall?.setOnClickListener {
             listener?.invoke(ACTION_TYPE_CALL, item)
         }
-        holder.dataBinding?.btnContactDetails?.setOnClickListener {
+
+
+        holder.dataBinding?.btnContactEdit?.setOnClickListener {
             listener?.invoke(ACTION_TYPE_DETAILS, item)
         }
+
         holder.itemView.setOnClickListener {
-            defineOptions(position)
+            defineActionsPosition(position)
             holder.dataBinding?.actions = showActions(position)
         }
     }
 
+    override fun setCursor(cursor: Cursor?) {
+        super.setCursor(cursor)
+        showActionsPosition = DEFAULT_ACTIONS_POSITION
+    }
+
+    /**
+     * Defines the touch listener
+     *
+     * @param listener that will handle touch events
+     */
     fun defineTouchListener(listener: (actionType: Int, Contact?) -> Unit) {
         this.listener = listener
     }
 
+    /**
+     * Validates if shows actions or not
+     *
+     * @param position index of the item
+     */
     private fun showActions(position: Int) = showActionsPosition == position
 
-    private fun defineOptions(position: Int) {
+    /**
+     * Defines the action position and undo the previous position
+     *
+     * @param position index of the item
+     */
+    private fun defineActionsPosition(position: Int) {
         val previousPosition = showActionsPosition
 
         showActionsPosition = if(showActionsPosition == position) DEFAULT_ACTIONS_POSITION else position

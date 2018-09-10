@@ -10,4 +10,6 @@ interface ContactDetailsPresenter {
 
     fun updateContact(id: String?, name: String, photo: Uri?)
 
+    fun deleteContact(id: String?)
+
 }

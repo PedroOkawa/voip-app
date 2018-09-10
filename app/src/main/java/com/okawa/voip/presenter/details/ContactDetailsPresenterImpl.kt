@@ -11,6 +11,7 @@ class ContactDetailsPresenterImpl @Inject constructor(private val contactsReposi
     companion object {
 
         private const val VOIP_APP_SUFFIX = "VoIPApp"
+
     }
 
     override fun generateRandomVoIPAppNumber() = "${generateRandomNumber()}$VOIP_APP_SUFFIX"
@@ -22,6 +23,12 @@ class ContactDetailsPresenterImpl @Inject constructor(private val contactsReposi
     override fun updateContact(id: String?, name: String, photo: Uri?) {
         id?.let {
             contactsRepository.updateContact(id, name, photo)
+        }
+    }
+
+    override fun deleteContact(id: String?) {
+        id?.let {
+            contactsRepository.deleteContact(id)
         }
     }
 

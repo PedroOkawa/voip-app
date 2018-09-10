@@ -15,7 +15,7 @@ abstract class CursorBindingAdapter<T, K : ViewDataBinding> : BaseBindingAdapter
         }
     }
 
-    fun setCursor(cursor: Cursor?) {
+    open fun setCursor(cursor: Cursor?) {
         this.cursor = cursor
         notifyDataSetChanged()
     }

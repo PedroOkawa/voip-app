@@ -17,7 +17,8 @@
     <dimen name="contact_image_margin_vertical">8dp</dimen>
     <dimen name="contact_image_margin_start">8dp</dimen>
     <dimen name="contact_image_margin_end">16dp</dimen>
-    <dimen name="contact_status_size">4dp</dimen>
+    <dimen name="contact_status_size">2dp</dimen>
+    <dimen name="contact_action_separator_margin">8dp</dimen>
 
     <!-- CREATE CONTACT -->
 

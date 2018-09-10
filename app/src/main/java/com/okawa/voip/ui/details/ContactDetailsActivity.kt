@@ -4,6 +4,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import com.okawa.voip.R
@@ -29,10 +30,6 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
     @Inject
     lateinit var callManager: CallManager
 
-    private var contact: Contact? = null
-
-    private var photo:Uri? = null
-
     private val name: String
         get() {
             return dataBinding.edtCreateContactName.getTextString()
@@ -42,6 +39,29 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
         get() {
             return dataBinding.edtCreateContactPhoneNumber.getTextString()
         }
+
+    private var contact: Contact? = null
+
+    private var photo:Uri? = null
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        if(contact != null) {
+            menuInflater.inflate(R.menu.menu_contact_details, menu)
+        }
+        return super.onCreateOptionsMenu(menu)
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
+        if(item?.itemId == android.R.id.home) {
+            finish()
+            return true
+        } else if (item?.itemId == R.id.action_delete_contact) {
+            contactDetailsPresenter.deleteContact(contact?.id)
+            finish()
+            return true
+        }
+        return false
+    }
 
     override fun layoutToInflate() = R.layout.activity_contact_details
 
@@ -61,14 +81,6 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
         initSaveButton()
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if(item?.itemId == android.R.id.home) {
-            finish()
-            return true
-        }
-        return false
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if(requestCode == REQUEST_CODE_IMAGE && resultCode == Activity.RESULT_OK) {
@@ -78,6 +90,9 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
         }
     }
 
+    /**
+     * Retrieve contact parcelable
+     */
     private fun retrieveContact() {
         contact = intent.getParcelableExtra(BUNDLE_CONTACTS)
     }
@@ -87,15 +102,28 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
      */
     private fun initToolbar() {
         setSupportActionBar(dataBinding.tlbCreateContactToolbar)
-        setTitle(R.string.contact_details_toolbar_title)
+        setTitle(if(contact != null) R.string.contact_details_edit_toolbar_title else R.string.contact_details_add_toolbar_title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
 
+    /**
+     * Initializes the add photo button action
+     */
     private fun initAddPhotoButton() {
         dataBinding.btnCreateContactPhoto.setOnClickListener {
             startActivityForResult(callManager.images(this@ContactDetailsActivity), REQUEST_CODE_IMAGE)
         }
+    }
+
+    /**
+     * Defines the photo uri to be saved
+     *
+     * @param uri photo
+     */
+    private fun definePhoto(uri: Uri) {
+        photo = uri
+        dataBinding.image = photo
     }
 
     /**
@@ -114,6 +142,9 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
         }
     }
 
+    /**
+     * Defines the initial form values
+     */
     private fun defineInitialValues() {
         if(contact != null) {
             dataBinding.edtCreateContactName.setText(contact?.name)
@@ -129,12 +160,6 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
         }
 
         dataBinding.edtCreateContactPhoneNumber.setText(number)
-    }
-
-    private fun definePhoto(uri: Uri) {
-        photo = uri
-        dataBinding.image = photo
-        dataBinding.btnCreateContactPhoto.text = ""
     }
 
     /**
