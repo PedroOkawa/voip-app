@@ -9,10 +9,13 @@
 
     <dimen name="on_boarding_phone_validation_item_margin">16dp</dimen>
 
-    <!-- CONTACTS LIST -->
+    <!-- CONTACT -->
 
-    <dimen name="contacts_list_image_size">64dp</dimen>
-    <dimen name="contacts_list_image_margin">8dp</dimen>
+    <dimen name="contact_container_margin">4dp</dimen>
+    <dimen name="contact_container_elevation">4dp</dimen>
+    <dimen name="contact_image_size">64dp</dimen>
+    <dimen name="contact_image_margin">8dp</dimen>
+    <dimen name="contact_status_size">8dp</dimen>
 
     <!-- TEXT SIZES -->
 

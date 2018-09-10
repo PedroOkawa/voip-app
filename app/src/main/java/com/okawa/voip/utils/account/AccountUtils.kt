@@ -6,7 +6,9 @@ import android.content.Context
 import android.os.Build
 import com.okawa.voip.R
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class AccountUtils @Inject constructor() {
 
     /**

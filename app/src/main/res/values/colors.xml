@@ -9,12 +9,15 @@
     <color name="colorWindow">@color/colorWhiteF4F7F9</color>
     <color name="colorWindowSplash">@color/colorBlue375A7E</color>
     <color name="colorToolbar">@color/colorPrimary</color>
+    <color name="colorTabLayout">@color/colorPrimary</color>
 
     <!-- TEXT -->
 
     <color name="colorTextLight">@color/colorWhiteFFFFFF</color>
     <color name="colorTextDark">@color/colorBlue364D64</color>
     <color name="colorTextToolbar">@color/colorTextLight</color>
+    <color name="colorTextNormalTabLayout">@color/colorTextLight</color>
+    <color name="colorTextSelectedTabLayout">@color/colorAccent</color>
 
     <!-- BUTTON -->
 
@@ -32,6 +35,11 @@
     <color name="colorBottomNavigationItemBackground">@color/colorPrimary</color>
     <color name="colorBottomNavigationItemIcon">@color/colorWhiteFFFFFF</color>
     <color name="colorBottomNavigationItemText">@color/colorWhiteFFFFFF</color>
+
+    <!-- STATUS -->
+
+    <color name="colorStatusVoIP">@color/colorPrimary</color>
+    <color name="colorStatusNotVoIP">@color/colorGrey8F8F8F</color>
 
     <!-- BASE COLORS -->
 

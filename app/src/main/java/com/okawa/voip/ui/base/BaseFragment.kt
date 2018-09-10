@@ -34,15 +34,22 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         AndroidSupportInjection.inject(this)
         super.onActivityCreated(savedInstanceState)
+        savedInstanceState?.let {
+            doOnRestoreInstance(it)
+        }
         doOnCreated()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?) =
             defineDataBinding(inflater, container)
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        doOnSaveInstance(outState)
+    }
+
     override fun onDestroyView() {
-        compositeDisposable.clear()
-        dataBinding.unbind()
+        dispose()
         super.onDestroyView()
     }
 
@@ -61,6 +68,19 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected fun enqueueObservable(disposable: Disposable) {
         compositeDisposable.add(disposable)
+    }
+
+    protected open fun dispose() {
+        compositeDisposable.clear()
+        dataBinding.unbind()
+    }
+
+    protected open fun doOnRestoreInstance(savedInstanceState: Bundle) {
+
+    }
+
+    protected open fun doOnSaveInstance(outState: Bundle) {
+
     }
 
 }

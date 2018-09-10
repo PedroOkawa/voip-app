@@ -1,13 +1,11 @@
 package com.okawa.voip.presenter.contacts
 
-import android.database.Cursor
-import com.okawa.voip.repository.status.Result
-import io.reactivex.Observable
+import com.okawa.voip.model.Contact
 
 interface ContactsPresenter {
 
-    fun getResultObservable(): Observable<Result>
+    fun insertContact(contact: Contact?)
 
-    fun retrieveContacts(cursor: Cursor?)
+    fun insertHistory(contact: Contact?)
 
 }

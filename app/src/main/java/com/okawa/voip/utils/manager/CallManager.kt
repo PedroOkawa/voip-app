@@ -10,7 +10,9 @@ import com.okawa.voip.ui.main.MainActivity
 import com.okawa.voip.ui.onboarding.OnBoardingActivity
 import com.okawa.voip.ui.settings.SettingsFragment
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class CallManager @Inject constructor() {
 
     /**

@@ -8,6 +8,11 @@
         <item name="colorControlActivated">@color/colorTextDark</item>
         <item name="colorControlHighlight">@color/colorTextDark</item>
         <item name="android:windowBackground">@color/colorWindow</item>
+        <item name="actionOverflowButtonStyle">@style/AppTheme.OverflowButton</item>
+    </style>
+    
+    <style name="AppTheme.OverflowButton">
+        <item name="android:src">@drawable/ic_overflow</item>
     </style>
 
     <style name="AppTheme.Splash">
@@ -21,7 +26,14 @@
         <item name="titleTextColor">@color/colorTextToolbar</item>
     </style>
 
+    <style name="AppTheme.TabLayout">
+        <item name="tabBackground">@color/colorTabLayout</item>
+        <item name="tabTextColor">@color/colorTextNormalTabLayout</item>
+        <item name="tabSelectedTextColor">@color/colorTextSelectedTabLayout</item>
+    </style>
+
     <style name="AppTheme.Navigation">
+        <item name="android:background">@color/colorBottomNavigationItemBackground</item>
         <item name="itemBackground">@color/colorBottomNavigationItemBackground</item>
         <item name="itemIconTint">@color/colorBottomNavigationItemIcon</item>
         <item name="itemTextColor">@color/colorBottomNavigationItemText</item>

@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- SPLASH -->
+
+    <string name="splash_error_permissions">You must grant the permissions to retrieve your contacts to use this application.</string>
+
     <!-- ON BOARDING -->
 
     <string name="on_boarding_error_invalid_phone">Please, provide a valid number by filling correctly the fields</string>

@@ -2,17 +2,20 @@ package com.okawa.voip.utils.adapter
 
 import android.annotation.SuppressLint
 import android.databinding.BindingAdapter
-import android.graphics.Bitmap
+import android.net.Uri
 import android.support.annotation.DrawableRes
+import android.support.v4.content.ContextCompat
+import android.view.View
 import android.widget.ImageView
 import com.bumptech.glide.Glide
 import com.bumptech.glide.request.RequestOptions
+import com.okawa.voip.R
 
 object DataBindingAdapter {
 
     @JvmStatic
     @BindingAdapter(value = ["bind:placeholder", "bind:image"])
-    fun image(imageView: ImageView, @DrawableRes placeholder: Int?, image: Bitmap?) {
+    fun image(imageView: ImageView, @DrawableRes placeholder: Int?, image: Uri?) {
         val requestOptions = RequestOptions().dontAnimate()
 
         loadImage(imageView, image, placeholder, requestOptions)
@@ -20,10 +23,16 @@ object DataBindingAdapter {
 
     @JvmStatic
     @BindingAdapter(value = ["bind:placeholder", "bind:circleImage"])
-    fun circleImage(imageView: ImageView, @DrawableRes placeholder: Int?, image: Bitmap?) {
+    fun circleImage(imageView: ImageView, @DrawableRes placeholder: Int?, image: Uri?) {
         val requestOptions = RequestOptions.circleCropTransform().dontAnimate()
 
         loadImage(imageView, image, placeholder, requestOptions)
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind:status")
+    fun status(view: View, status: Boolean?) {
+        view.setBackgroundColor(ContextCompat.getColor(view.context, if(status == true) R.color.colorStatusVoIP else R.color.colorStatusNotVoIP))
     }
 
     /**
@@ -35,7 +44,7 @@ object DataBindingAdapter {
      * @param requestOptions used to define the options to load the image
      */
     @SuppressLint("CheckResult")
-    private fun loadImage(imageView: ImageView, image: Bitmap?, placeholder: Int?, requestOptions: RequestOptions) {
+    private fun loadImage(imageView: ImageView, image: Uri?, placeholder: Int?, requestOptions: RequestOptions) {
         if(placeholder != null) {
             requestOptions.placeholder(placeholder)
         }

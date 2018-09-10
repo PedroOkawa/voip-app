@@ -3,6 +3,7 @@ package com.okawa.voip.di.component
 import android.app.Application
 import com.okawa.voip.App
 import com.okawa.voip.di.module.ActivityBuilderModule
+import com.okawa.voip.di.module.ProviderBuilderModule
 import com.okawa.voip.di.module.UtilsModule
 import dagger.BindsInstance
 import dagger.Component
@@ -14,6 +15,7 @@ import javax.inject.Singleton
 @Component(modules = [
     ActivityBuilderModule::class,
     AndroidSupportInjectionModule::class,
+    ProviderBuilderModule::class,
     UtilsModule::class
 ])
 interface AppComponent : AndroidInjector<App> {

@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -8,30 +9,61 @@
             type="int"/>
         <variable
             name="image"
-            type="android.graphics.Bitmap"/>
+            type="android.net.Uri"/>
+        <variable
+            name="status"
+            type="Boolean"/>
     </data>
 
-    <LinearLayout
-        android:orientation="horizontal"
+    <android.support.v7.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center_vertical"
-        android:layout_margin="4dp">
+        android:layout_margin="@dimen/contact_container_margin"
+        app:elevation="@dimen/contact_container_elevation">
 
-        <ImageView
-            android:id="@+id/imgContactPhoto"
-            android:layout_width="@dimen/contacts_list_image_size"
-            android:layout_height="@dimen/contacts_list_image_size"
-            android:layout_margin="@dimen/contacts_list_image_margin"
-            bind:placeholder="@{placeholder}"
-            bind:circleImage="@{image}"/>
+        <LinearLayout
+            android:orientation="horizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center_vertical">
 
-        <TextView
-            style="@style/AppTheme.Text.SubtitleOne.Bold"
-            android:id="@+id/txtContactName"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content" />
+            <ImageView
+                android:id="@+id/imgContactPhoto"
+                android:layout_width="@dimen/contact_image_size"
+                android:layout_height="@dimen/contact_image_size"
+                android:layout_margin="@dimen/contact_image_margin"
+                bind:placeholder="@{placeholder}"
+                bind:circleImage="@{image}"/>
 
-    </LinearLayout>
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1">
+
+                <TextView
+                    style="@style/AppTheme.Text.SubtitleOne.Bold"
+                    android:id="@+id/txtContactName"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+                <TextView
+                    style="@style/AppTheme.Text.SubtitleOne.Bold"
+                    android:id="@+id/txtContactNumber"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content" />
+
+            </LinearLayout>
+
+            <View
+                android:id="@+id/viewContactStatus"
+                android:layout_width="@dimen/contact_status_size"
+                android:layout_gravity="end"
+                android:layout_height="match_parent"
+                bind:status="@{status}"/>
+
+        </LinearLayout>
+
+    </android.support.v7.widget.CardView>
 
 </layout>

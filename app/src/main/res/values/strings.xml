@@ -22,4 +22,10 @@
     <string name="main_menu_history">History</string>
     <string name="main_menu_settings">Settings</string>
 
+    <!-- CONTACTS -->
+
+    <string name="contacts_menu_add_contact">Add Contact</string>
+    <string name="contacts_filter_all">All</string>
+    <string name="contacts_filter_voip_app">VoIP APP</string>
+
 </resources>

@@ -12,6 +12,7 @@ ext.libraries = [
 
         appCompat : [
                 base                    : "com.android.support:appcompat-v7:$versions.appCompatVersion",
+                cardview                : "com.android.support:cardview-v7:$versions.appCompatVersion",
                 constraintLayout        : "com.android.support.constraint:constraint-layout:$versions.appCompatConstraintLayoutVersion",
                 design                  : "com.android.support:design:$versions.appCompatVersion",
                 recyclerView            : "com.android.support:recyclerview-v7:$versions.appCompatVersion",

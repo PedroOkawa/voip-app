@@ -39,7 +39,18 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), HasSuppo
 
         defineDataBinding()
 
+        savedInstanceState?.let {
+            doOnRestoreInstance(it)
+        }
+
         doOnCreated()
+    }
+
+    override fun onSaveInstanceState(outState: Bundle?) {
+        super.onSaveInstanceState(outState)
+        outState?.let {
+            doOnSaveInstance(it)
+        }
     }
 
     override fun onDestroy() {
@@ -52,6 +63,14 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), HasSuppo
      */
     private fun defineDataBinding() {
         dataBinding = DataBindingUtil.setContentView(this, layoutToInflate())
+    }
+
+    protected open fun doOnRestoreInstance(savedInstanceState: Bundle) {
+
+    }
+
+    protected open fun doOnSaveInstance(outState: Bundle) {
+
     }
 
 }

@@ -20,7 +20,7 @@ abstract class BaseBindingAdapter<T, K : ViewDataBinding> : BaseAdapter<T, BaseB
         return BindingViewHolder(view)
     }
 
-    final override fun onBindViewHolder(holder: BindingViewHolder<K>, position: Int) {
+    override fun onBindViewHolder(holder: BindingViewHolder<K>, position: Int) {
         doOnBindViewHolder(holder, getItem(position), position)
     }
 

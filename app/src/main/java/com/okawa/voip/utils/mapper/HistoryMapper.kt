@@ -1,32 +1,53 @@
 package com.okawa.voip.utils.mapper
 
+import android.content.ContentValues
 import android.database.Cursor
-import android.provider.CallLog
+import android.net.Uri
+import com.okawa.voip.model.Contact
 import com.okawa.voip.model.History
+import com.okawa.voip.utils.extensions.toBoolean
+import com.okawa.voip.utils.extensions.toInt
+import java.util.*
 import javax.inject.Inject
+import javax.inject.Singleton
 
+@Singleton
 class HistoryMapper @Inject constructor() {
 
     /**
-     * Converts the cursor to a Contact instance
+     * Converts the cursor to a History instance
      *
-     * @param cursor holding the contact data
+     * @param cursor holding the history data
      *
-     * @return contact instance
+     * @return history instance
      */
     fun convert(cursor: Cursor): History {
-        val nameColumnId = cursor.getColumnIndex(CallLog.Calls.CACHED_NAME)
-        val numberColumnId = cursor.getColumnIndex(CallLog.Calls.NUMBER)
-        //val photoColumnId = cursor.getColumnIndex(ContactsContract.Contacts.Photo.PHOTO)
-        val dateColumnId = cursor.getColumnIndex(CallLog.Calls.DATE)
+        val nameColumnId = cursor.getColumnIndex(History.COLUMN_NAME)
+        val numberColumnId = cursor.getColumnIndex(History.COLUMN_NUMBER)
+        val photoColumnId = cursor.getColumnIndex(History.COLUMN_PHOTO)
+        val isVoIPAppColumnId = cursor.getColumnIndex(History.COLUMN_IS_VOIP_APP)
+        val dateColumnId = cursor.getColumnIndex(History.COLUMN_DATE)
 
         val name = cursor.getString(nameColumnId) ?: "Unknown"
         val number = cursor.getString(numberColumnId) ?: "Unknown"
-        //val photoData: ByteArray? = cursor.getBlob(photoColumnId)
-        //val photoBitmap = if(photoData != null) BitmapFactory.decodeByteArray(photoData, 0, photoData.size) else null
-        val date = cursor.getString(dateColumnId) ?: ""
+        val photoString = cursor.getString(photoColumnId)
+        val photo = Uri.parse(photoString ?: "")
+        val isVoIPAppInt = cursor.getInt(isVoIPAppColumnId)
+        val dateTime = cursor.getLong(dateColumnId)
 
-        return History(name, number, null, date)
+        val date = Date()
+        date.time = dateTime
+
+        return History(name, number, photo, isVoIPAppInt.toBoolean(), date)
     }
+
+    /**
+     * Converts the contact to a History instance
+     *
+     * @param contact holding the history data
+     *
+     * @return history instance
+     */
+    fun convert(contact: Contact) = History(contact.name, contact.number, contact.photo, contact.isVoIPApp, Date())
 
 }

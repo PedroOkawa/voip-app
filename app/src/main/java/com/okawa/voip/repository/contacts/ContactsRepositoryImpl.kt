@@ -1,25 +1,13 @@
 package com.okawa.voip.repository.contacts
 
-import android.database.Cursor
-import com.okawa.voip.utils.mapper.ContactMapper
+import com.okawa.voip.db.DatabaseManager
 import com.okawa.voip.model.Contact
-import com.okawa.voip.utils.executors.AppExecutors
 import javax.inject.Inject
 
-class ContactsRepositoryImpl @Inject constructor(private val appExecutors: AppExecutors, private val contactMapper: ContactMapper) : ContactsRepository {
+class ContactsRepositoryImpl @Inject constructor(private val databaseManager: DatabaseManager) : ContactsRepository {
 
-    override fun retrieveContacts(cursor: Cursor?, listener: (List<Contact>) -> Unit) {
-        cursor?.let {
-            appExecutors.getDiskIO().execute {
-                val result = ArrayList<Contact>()
-
-                while (!it.isClosed && it.moveToNext()) {
-                    result.add(contactMapper.convert(it))
-                }
-
-                listener.invoke(result)
-            }
-        }
+    override fun insertContact(contact: Contact) {
+        databaseManager.insertContact(contact)
     }
 
 }

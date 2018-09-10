@@ -1,10 +1,9 @@
 package com.okawa.voip.repository.history
 
-import android.database.Cursor
-import com.okawa.voip.model.History
+import com.okawa.voip.model.Contact
 
 interface HistoryRepository {
 
-    fun retrieveHistory(cursor: Cursor?, listener: (List<History>) -> Unit)
+    fun insertHistory(contact: Contact)
 
 }
