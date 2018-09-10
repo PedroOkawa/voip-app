@@ -37,4 +37,6 @@ class ContactMapper @Inject constructor() {
         return Contact(contactId, name, number, photoUri, isVoIPApp)
     }
 
+    fun convert(name: String, number: String, photo: Uri?, isVoIPApp: Boolean) = Contact("0", name, number, photo, isVoIPApp)
+
 }

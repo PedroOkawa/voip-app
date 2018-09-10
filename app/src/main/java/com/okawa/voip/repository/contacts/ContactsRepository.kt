@@ -1,9 +1,9 @@
 package com.okawa.voip.repository.contacts
 
-import com.okawa.voip.model.Contact
+import android.net.Uri
 
 interface ContactsRepository {
 
-    fun insertContact(contact: Contact)
+    fun insertContact(name: String, number: String, photo: Uri?)
 
 }

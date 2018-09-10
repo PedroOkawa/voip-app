@@ -59,7 +59,9 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         if(item?.itemId == R.id.action_add_contact) {
-            //startActivity()
+            context?.let {
+                startActivity(callManager.createContact(it))
+            }
             return true
         }
         return false

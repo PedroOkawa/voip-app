@@ -5,9 +5,6 @@
 
     <data>
         <variable
-            name="placeholder"
-            type="int"/>
-        <variable
             name="image"
             type="android.net.Uri"/>
         <variable
@@ -32,7 +29,7 @@
                 android:layout_width="@dimen/contact_image_size"
                 android:layout_height="@dimen/contact_image_size"
                 android:layout_margin="@dimen/contact_image_margin"
-                bind:placeholder="@{placeholder}"
+                bind:placeholder="@{@drawable/ic_contact_placeholder}"
                 bind:circleImage="@{image}"/>
 
             <LinearLayout

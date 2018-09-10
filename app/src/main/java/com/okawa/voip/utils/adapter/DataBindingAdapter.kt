@@ -2,6 +2,7 @@ package com.okawa.voip.utils.adapter
 
 import android.annotation.SuppressLint
 import android.databinding.BindingAdapter
+import android.graphics.drawable.Drawable
 import android.net.Uri
 import android.support.annotation.DrawableRes
 import android.support.v4.content.ContextCompat
@@ -15,7 +16,7 @@ object DataBindingAdapter {
 
     @JvmStatic
     @BindingAdapter(value = ["bind:placeholder", "bind:image"])
-    fun image(imageView: ImageView, @DrawableRes placeholder: Int?, image: Uri?) {
+    fun image(imageView: ImageView, placeholder: Drawable?, image: Uri?) {
         val requestOptions = RequestOptions().dontAnimate()
 
         loadImage(imageView, image, placeholder, requestOptions)
@@ -23,7 +24,7 @@ object DataBindingAdapter {
 
     @JvmStatic
     @BindingAdapter(value = ["bind:placeholder", "bind:circleImage"])
-    fun circleImage(imageView: ImageView, @DrawableRes placeholder: Int?, image: Uri?) {
+    fun circleImage(imageView: ImageView, placeholder: Drawable?, image: Uri?) {
         val requestOptions = RequestOptions.circleCropTransform().dontAnimate()
 
         loadImage(imageView, image, placeholder, requestOptions)
@@ -44,7 +45,7 @@ object DataBindingAdapter {
      * @param requestOptions used to define the options to load the image
      */
     @SuppressLint("CheckResult")
-    private fun loadImage(imageView: ImageView, image: Uri?, placeholder: Int?, requestOptions: RequestOptions) {
+    private fun loadImage(imageView: ImageView, image: Uri?, placeholder: Drawable?, requestOptions: RequestOptions) {
         if(placeholder != null) {
             requestOptions.placeholder(placeholder)
         }

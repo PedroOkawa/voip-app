@@ -9,12 +9,16 @@ import com.okawa.voip.model.Contact
 import com.okawa.voip.model.History
 import com.okawa.voip.utils.executors.AppExecutors
 import com.okawa.voip.utils.extensions.toInt
+import com.okawa.voip.utils.mapper.ContactMapper
 import com.okawa.voip.utils.mapper.HistoryMapper
+import java.io.ByteArrayOutputStream
+import java.io.IOException
+import java.io.InputStream
 import javax.inject.Inject
 import javax.inject.Singleton
 
 @Singleton
-class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors, private val application: Application, private val historyMapper: HistoryMapper) {
+class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors, private val application: Application, private val contactMapper: ContactMapper, private val historyMapper: HistoryMapper) {
 
     companion object {
         const val VOIP_APP_SUFFIX = "VoIPApp"
@@ -22,9 +26,15 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
         const val VOIP_APP_VIEW_PROFILE = "View Profile"
     }
 
-    fun insertContact(contact: Contact) {
+    fun insertContact(name: String, number: String, photo: Uri?) {
         appExecutors.getDiskIO().execute {
+            val contact = contactMapper.convert(name, number, photo, true)
             val operations = ArrayList<ContentProviderOperation>()
+            var photoBlob: ByteArray? = null
+            contact.photo?.let {
+                val inputStream = application.contentResolver.openInputStream(contact.photo)
+                photoBlob = getBytes(inputStream)
+            }
 
             operations.add(ContentProviderOperation.newInsert(ContactsContract.RawContacts.CONTENT_URI)
                     .withValue(ContactsContract.RawContacts.ACCOUNT_NAME, contact.name)
@@ -56,6 +66,13 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
             operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI.buildUpon()
                     .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build())
                     .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
+                    .withValue(ContactsContract.Data.MIMETYPE, ContactsContract.CommonDataKinds.Photo.CONTENT_ITEM_TYPE)
+                    .withValue(ContactsContract.CommonDataKinds.Photo.PHOTO, photoBlob)
+                    .build())
+
+            operations.add(ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI.buildUpon()
+                    .appendQueryParameter(ContactsContract.CALLER_IS_SYNCADAPTER, "true").build())
+                    .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                     .withValue(ContactsContract.Data.MIMETYPE, DatabaseHelper.MIME_TYPE)
                     .withValue(ContactsContract.Data.DATA1, "${contact.number}$VOIP_APP_SUFFIX")
                     .withValue(ContactsContract.Data.DATA2, VOIP_APP_PROFILE)
@@ -80,6 +97,20 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
 
             application.contentResolver.insert(History.CONTENT_URI, contentValues)
         }
+    }
+
+    @Throws(IOException::class)
+    fun getBytes(inputStream: InputStream): ByteArray {
+        val byteBuffer = ByteArrayOutputStream()
+        val bufferSize = 1024
+        val buffer = ByteArray(bufferSize)
+
+        var len = -1
+        while (len != -1) {
+            len = inputStream.read(buffer)
+            byteBuffer.write(buffer, 0, len)
+        }
+        return byteBuffer.toByteArray()
     }
 
 }

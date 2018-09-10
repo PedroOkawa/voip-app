@@ -17,6 +17,11 @@
     <dimen name="contact_image_margin">8dp</dimen>
     <dimen name="contact_status_size">8dp</dimen>
 
+    <!-- CREATE CONTACT -->
+
+    <dimen name="create_contact_avatar_size">128dp</dimen>
+    <dimen name="create_contact_item_margin">16dp</dimen>
+
     <!-- TEXT SIZES -->
 
     <dimen name="text_size_headline_one">96sp</dimen>

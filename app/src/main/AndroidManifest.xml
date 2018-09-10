@@ -49,6 +49,8 @@
 
         <activity android:name=".ui.main.MainActivity"/>
 
+        <activity android:name=".ui.create.CreateContactActivity"/>
+
         <service android:name=".utils.account.AuthenticatorService"
             android:exported="false"
             android:process=":auth">

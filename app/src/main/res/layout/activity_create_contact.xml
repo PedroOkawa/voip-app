@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:bind="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+            name="image"
+            type="android.net.Uri"/>
+    </data>
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <android.support.v7.widget.Toolbar
+            style="@style/AppTheme.Toolbar"
+            android:id="@+id/tlbCreateContactToolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <android.support.v7.widget.CardView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/create_contact_item_margin">
+
+                    <LinearLayout
+                        android:orientation="vertical"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content">
+
+                        <FrameLayout
+                            android:layout_width="@dimen/create_contact_avatar_size"
+                            android:layout_height="@dimen/create_contact_avatar_size"
+                            android:layout_margin="@dimen/create_contact_item_margin"
+                            android:layout_gravity="center_horizontal">
+
+                            <ImageView
+                                android:id="@+id/imgCreateContactPhoto"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                bind:placeholder="@{@drawable/ic_create_contact_placeholder}"
+                                bind:circleImage="@{image}"/>
+
+                            <Button
+                                android:id="@+id/btnCreateContactPhoto"
+                                style="@style/AppTheme.Text.Button"
+                                android:layout_width="match_parent"
+                                android:layout_height="match_parent"
+                                android:background="@null"
+                                android:text="@string/create_contact_add_photo_button"/>
+
+                        </FrameLayout>
+
+                        <EditText
+                            style="@style/AppTheme.Text.SubtitleOne"
+                            android:id="@+id/edtCreateContactName"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/create_contact_item_margin"
+                            android:layout_marginEnd="@dimen/create_contact_item_margin"
+                            android:hint="@string/create_contact_name_hint"
+                            android:inputType="textPersonName"
+                            android:lines="1"
+                            android:imeOptions="actionNext"/>
+
+                        <AutoCompleteTextView
+                            style="@style/AppTheme.Text.SubtitleOne"
+                            android:id="@+id/acmCreateContactCountryCodes"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/create_contact_item_margin"
+                            android:layout_marginEnd="@dimen/create_contact_item_margin"
+                            android:ellipsize="end"
+                            android:hint="@string/phone_validation_country_hint"
+                            android:singleLine="true"
+                            android:imeOptions="actionNext"/>
+
+                        <EditText
+                            style="@style/AppTheme.Text.SubtitleOne"
+                            android:id="@+id/edtCreateContactPhoneNumber"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:layout_marginStart="@dimen/create_contact_item_margin"
+                            android:layout_marginEnd="@dimen/create_contact_item_margin"
+                            android:layout_marginBottom="@dimen/create_contact_item_margin"
+                            android:hint="@string/phone_validation_phone_hint"
+                            android:digits="0123456789"
+                            android:inputType="phone"
+                            android:lines="1"
+                            android:imeOptions="actionDone"/>
+
+                    </LinearLayout>
+
+                </android.support.v7.widget.CardView>
+
+                <Button
+                    style="@style/AppTheme.Text.Button.Light"
+                    android:id="@+id/btnCreateContactSave"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/create_contact_item_margin"
+                    android:text="@string/create_contact_save_button"
+                    android:background="@drawable/selector_button"/>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+    </LinearLayout>
+
+</layout>

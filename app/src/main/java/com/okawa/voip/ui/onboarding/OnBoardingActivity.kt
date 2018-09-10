@@ -108,6 +108,5 @@ class OnBoardingActivity : BaseActivity<ActivityOnBoardingBinding>() {
         }
 
         return onBoardingPresenter.validatePhoneNumber(region, phoneNumber)
-
     }
 }

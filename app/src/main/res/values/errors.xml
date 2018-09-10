@@ -7,6 +7,11 @@
 
     <!-- ON BOARDING -->
 
-    <string name="on_boarding_error_invalid_phone">Please, provide a valid number by filling correctly the fields</string>
+    <string name="on_boarding_error_invalid_phone">Please, provide a valid phone number by filling correctly the fields</string>
+
+    <!-- CREATE CONTACT -->
+
+    <string name="create_contact_error_invalid_name">Please, provide a valid name</string>
+    <string name="create_contact_error_invalid_phone">Please, provide a valid phone number</string>
 
 </resources>

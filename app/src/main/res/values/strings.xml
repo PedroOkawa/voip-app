@@ -3,13 +3,12 @@
     <!-- COMMON -->
 
     <string name="app_name">VoIPApp</string>
+    <string name="picture_intent_title">Select Picture</string>
 
     <!-- ON BOARDING -->
 
     <string name="on_boarding_phone_validation_toolbar_title">Phone Validation</string>
     <string name="on_boarding_phone_validation_description">Please, insert your phone number to validate your account</string>
-    <string name="on_boarding_phone_validation_country_hint">Country</string>
-    <string name="on_boarding_phone_validation_phone_hint">Phone Number</string>
     <string name="on_boarding_phone_validation_button">Proceed</string>
 
     <!-- MAIN -->
@@ -27,5 +26,17 @@
     <string name="contacts_menu_add_contact">Add Contact</string>
     <string name="contacts_filter_all">All</string>
     <string name="contacts_filter_voip_app">VoIP APP</string>
+
+    <!-- CREATE CONTACT -->
+
+    <string name="create_contact_toolbar_title">New Contact</string>
+    <string name="create_contact_add_photo_button">Touch to\nadd Photo</string>
+    <string name="create_contact_name_hint">Name</string>
+    <string name="create_contact_save_button">Save</string>
+
+    <!-- PHONE VALIDATION -->
+
+    <string name="phone_validation_country_hint">Country</string>
+    <string name="phone_validation_phone_hint">Phone Number</string>
 
 </resources>

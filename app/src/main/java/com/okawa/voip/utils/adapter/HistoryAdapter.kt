@@ -20,7 +20,6 @@ class HistoryAdapter(private val historyMapper: HistoryMapper) : CursorBindingAd
         holder.dataBinding?.txtHistoryName?.text = item?.name
         holder.dataBinding?.txtHistoryNumber?.text = item?.number
         holder.dataBinding?.txtHistoryDate?.text = convertDate(item?.date)
-        holder.dataBinding?.placeholder = R.drawable.ic_contact_placeholder
         holder.dataBinding?.image = item?.photo
         holder.dataBinding?.status = item?.isVoIPApp
     }

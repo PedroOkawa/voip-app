@@ -19,7 +19,6 @@ class ContactAdapter(private val contactMapper: ContactMapper) : CursorBindingAd
     override fun doOnBindViewHolder(holder: BindingViewHolder<AdapterContactBinding>, item: Contact?, position: Int) {
         holder.dataBinding?.txtContactName?.text = item?.name
         holder.dataBinding?.txtContactNumber?.text = item?.number
-        holder.dataBinding?.placeholder = R.drawable.ic_contact_placeholder
         holder.dataBinding?.image = item?.photo
         holder.dataBinding?.status = item?.isVoIPApp
         holder.itemView.setOnClickListener {
