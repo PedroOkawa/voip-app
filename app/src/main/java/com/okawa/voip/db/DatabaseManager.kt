@@ -161,9 +161,7 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
 
             operations.clear()
 
-            val name = application.getString(R.string.common_deleted_name)
-
-            updateHistory(id, name, null)
+            deleteContactOfHistory(id)
         }
     }
 
@@ -234,9 +232,32 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
 
             operations.add(ContentProviderOperation.newUpdate(History.CONTENT_URI)
                     .withSelection("${History.COLUMN_CONTACT_ID} = ?", arrayOf(contactId))
-                    .withValue(History.COLUMN_CONTACT_ID, "")
                     .withValue(History.COLUMN_NAME, name)
                     .withValue(History.COLUMN_PHOTO, photo.toString())
+                    .build())
+
+            contentResolver.applyBatch(DatabaseHelper.AUTHORITY, operations)
+
+            operations.clear()
+        }
+    }
+
+    /**
+     * Deletes the contact of the history based on the given information
+     *
+     * @param contactId ID of the contact
+     */
+    private fun deleteContactOfHistory(contactId: String) {
+        appExecutors.getDiskIO().execute {
+            val name = application.getString(R.string.common_deleted_name)
+
+            val operations = ArrayList<ContentProviderOperation>()
+
+            operations.add(ContentProviderOperation.newUpdate(History.CONTENT_URI)
+                    .withSelection("${History.COLUMN_CONTACT_ID} = ?", arrayOf(contactId))
+                    .withValue(History.COLUMN_CONTACT_ID, "")
+                    .withValue(History.COLUMN_NAME, name)
+                    .withValue(History.COLUMN_PHOTO, null)
                     .build())
 
             contentResolver.applyBatch(DatabaseHelper.AUTHORITY, operations)
