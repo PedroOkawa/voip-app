@@ -61,13 +61,13 @@
 
                     <TextView
                         style="@style/AppTheme.Text.SubtitleOne"
-                        android:id="@+id/txtHistoryDate"
+                        android:id="@+id/txtHistoryNumber"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
                     <TextView
                         style="@style/AppTheme.Text.SubtitleOne"
-                        android:id="@+id/txtHistoryNumber"
+                        android:id="@+id/txtHistoryDate"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content" />
 
