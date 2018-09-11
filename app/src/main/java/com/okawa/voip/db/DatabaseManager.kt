@@ -6,11 +6,10 @@ import android.content.ContentResolver
 import android.content.ContentValues
 import android.net.Uri
 import android.provider.ContactsContract
-import com.okawa.voip.model.Contact
+import com.okawa.voip.R
 import com.okawa.voip.model.History
 import com.okawa.voip.utils.executors.AppExecutors
 import com.okawa.voip.utils.extensions.toInt
-import com.okawa.voip.utils.mapper.HistoryMapper
 import javax.inject.Inject
 import javax.inject.Singleton
 import com.okawa.voip.utils.utils.BitmapUtils
@@ -18,7 +17,7 @@ import java.io.FileNotFoundException
 
 
 @Singleton
-class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors, application: Application, private val bitmapUtils: BitmapUtils, private val historyMapper: HistoryMapper) {
+class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors, private val application: Application, private val bitmapUtils: BitmapUtils) {
 
     companion object {
         const val VOIP_APP_PROFILE = "VoIP App Profile"
@@ -140,6 +139,8 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
             contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
 
             operations.clear()
+
+            updateHistory(id, name, photo)
         }
     }
 
@@ -159,20 +160,23 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
             contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
 
             operations.clear()
+
+            val name = application.getString(R.string.common_deleted_name)
+
+            updateHistory(id, name, null)
         }
     }
 
     /**
      * Inserts contact call to the History
      *
-     * @param contact to be inserted to the call log
+     * @param history to be inserted to the call log
      */
-    fun insertHistory(contact: Contact) {
+    fun insertHistory(history: History) {
         appExecutors.getDiskIO().execute {
-            val history = historyMapper.convert(contact)
-
             val contentValues = ContentValues()
 
+            contentValues.put(History.COLUMN_CONTACT_ID, history.contactId)
             contentValues.put(History.COLUMN_NAME, history.name)
             contentValues.put(History.COLUMN_NUMBER, history.number)
             contentValues.put(History.COLUMN_PHOTO, history.photo.toString())
@@ -180,6 +184,64 @@ class DatabaseManager @Inject constructor(private val appExecutors: AppExecutors
             contentValues.put(History.COLUMN_DATE, history.date.time)
 
             contentResolver.insert(History.CONTENT_URI, contentValues)
+        }
+    }
+
+    /**
+     * Deletes all VoIP App data related
+     */
+    fun deleteAllData() {
+        deleteVoIPAppHistory()
+        deleteAllVoIPContacts()
+    }
+
+    /**
+     * Deletes all VoIP App history
+     */
+    fun deleteVoIPAppHistory() {
+        appExecutors.getDiskIO().execute {
+            contentResolver.delete(History.CONTENT_URI, null, null)
+        }
+    }
+
+    /**
+     * Deletes all VoIP App contacts
+     */
+    private fun deleteAllVoIPContacts() {
+        appExecutors.getDiskIO().execute {
+            val operations = ArrayList<ContentProviderOperation>()
+
+            operations.add(ContentProviderOperation.newDelete(ContactsContract.Data.CONTENT_URI)
+                    .withSelection("${ContactsContract.Data.MIMETYPE} = ?", arrayOf(DatabaseHelper.MIME_TYPE))
+                    .build())
+
+            contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+
+            operations.clear()
+        }
+    }
+
+    /**
+     * Updates the history based on the given information
+     *
+     * @param contactId ID of the contact
+     * @param name of the contact
+     * @param photo of the contact
+     */
+    private fun updateHistory(contactId: String, name: String, photo: Uri?) {
+        appExecutors.getDiskIO().execute {
+            val operations = ArrayList<ContentProviderOperation>()
+
+            operations.add(ContentProviderOperation.newUpdate(History.CONTENT_URI)
+                    .withSelection("${History.COLUMN_CONTACT_ID} = ?", arrayOf(contactId))
+                    .withValue(History.COLUMN_CONTACT_ID, "")
+                    .withValue(History.COLUMN_NAME, name)
+                    .withValue(History.COLUMN_PHOTO, photo.toString())
+                    .build())
+
+            contentResolver.applyBatch(DatabaseHelper.AUTHORITY, operations)
+
+            operations.clear()
         }
     }
 

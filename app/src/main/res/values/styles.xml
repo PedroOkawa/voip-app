@@ -7,8 +7,10 @@
         <item name="colorControlNormal">@color/colorTextDark</item>
         <item name="colorControlActivated">@color/colorTextDark</item>
         <item name="colorControlHighlight">@color/colorTextDark</item>
-        <item name="android:windowBackground">@color/colorWindow</item>
         <item name="actionOverflowButtonStyle">@style/AppTheme.OverflowButton</item>
+        <item name="android:windowBackground">@color/colorWindow</item>
+        <item name="android:windowEnableSplitTouch">false</item>
+        <item name="android:splitMotionEvents">false</item>
     </style>
     
     <style name="AppTheme.OverflowButton">

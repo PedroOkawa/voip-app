@@ -10,6 +10,12 @@
         <variable
             name="status"
             type="Boolean"/>
+        <variable
+            name="hideActions"
+            type="Boolean"/>
+        <variable
+            name="hideEdit"
+            type="Boolean"/>
     </data>
 
     <android.support.v7.widget.CardView
@@ -19,54 +25,97 @@
         app:elevation="@dimen/contact_container_elevation">
 
         <LinearLayout
-            android:orientation="horizontal"
+            android:orientation="vertical"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center_vertical">
-
-            <ImageView
-                android:id="@+id/imgHistoryPhoto"
-                android:layout_width="@dimen/contact_image_size"
-                android:layout_height="@dimen/contact_image_size"
-                android:layout_marginTop="@dimen/contact_image_margin_vertical"
-                android:layout_marginBottom="@dimen/contact_image_margin_vertical"
-                android:layout_marginStart="@dimen/contact_image_margin_start"
-                android:layout_marginEnd="@dimen/contact_image_margin_end"
-                bind:placeholder="@{@drawable/ic_contact_placeholder}"
-                bind:circleImage="@{image}"/>
+            android:layout_height="wrap_content">
 
             <LinearLayout
-                android:orientation="vertical"
-                android:layout_width="0dp"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1">
+                android:gravity="center_vertical"
+                android:background="?android:attr/selectableItemBackground">
 
-                <TextView
-                    style="@style/AppTheme.Text.SubtitleOne.Bold"
-                    android:id="@+id/txtHistoryName"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <ImageView
+                    android:id="@+id/imgHistoryPhoto"
+                    android:layout_width="@dimen/contact_image_size"
+                    android:layout_height="@dimen/contact_image_size"
+                    android:layout_marginTop="@dimen/contact_image_margin_vertical"
+                    android:layout_marginBottom="@dimen/contact_image_margin_vertical"
+                    android:layout_marginStart="@dimen/contact_image_margin_start"
+                    android:layout_marginEnd="@dimen/contact_image_margin_end"
+                    bind:placeholder="@{@drawable/ic_contact_placeholder}"
+                    bind:circleImage="@{image}"/>
 
-                <TextView
-                    style="@style/AppTheme.Text.SubtitleOne"
-                    android:id="@+id/txtHistoryNumber"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                <LinearLayout
+                    android:orientation="vertical"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1">
 
-                <TextView
-                    style="@style/AppTheme.Text.SubtitleOne"
-                    android:id="@+id/txtHistoryDate"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content" />
+                    <TextView
+                        style="@style/AppTheme.Text.SubtitleOne.Bold"
+                        android:id="@+id/txtHistoryName"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        style="@style/AppTheme.Text.SubtitleOne"
+                        android:id="@+id/txtHistoryDate"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                    <TextView
+                        style="@style/AppTheme.Text.SubtitleOne"
+                        android:id="@+id/txtHistoryNumber"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
+
+                </LinearLayout>
 
             </LinearLayout>
 
             <View
                 android:id="@+id/viewHistoryStatus"
-                android:layout_width="@dimen/contact_status_size"
-                android:layout_gravity="end"
-                android:layout_height="match_parent"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/contact_status_size"
                 bind:status="@{status}"/>
+
+            <LinearLayout
+                android:id="@+id/lnrHistoryActions"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                bind:hide="@{hideActions}">
+
+                <Button
+                    style="@style/AppTheme.Text.Button"
+                    android:id="@+id/btnHistoryCall"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/contacts_action_call"/>
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="@dimen/contact_action_separator_margin"
+                    android:layout_marginBottom="@dimen/contact_action_separator_margin"
+                    bind:status="@{status}"
+                    bind:hide="@{hideEdit}"/>
+
+                <Button
+                    style="@style/AppTheme.Text.Button"
+                    android:id="@+id/btnHistoryEdit"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:background="?android:attr/selectableItemBackground"
+                    android:text="@string/contacts_action_edit"
+                    bind:hide="@{hideEdit}"/>
+
+            </LinearLayout>
 
         </LinearLayout>
 

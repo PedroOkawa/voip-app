@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:bind="http://schemas.android.com/tools">
+
+    <data>
+        <variable
+            name="loading"
+            type="Boolean"/>
+        <variable
+            name="empty"
+            type="Boolean"/>
+    </data>
 
     <LinearLayout
         android:orientation="vertical"
@@ -31,7 +41,16 @@
         <android.support.v7.widget.RecyclerView
             android:id="@+id/rclContactsContent"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            bind:hide="@{loading || empty}"/>
+
+        <include
+            layout="@layout/view_loading"
+            bind:loading="@{loading}"/>
+
+        <include
+            layout="@layout/view_empty"
+            bind:empty="@{empty}"/>
 
     </LinearLayout>
 

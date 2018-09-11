@@ -36,9 +36,15 @@ object DataBindingAdapter {
     }
 
     @JvmStatic
-    @BindingAdapter("bind:actions")
-    fun actions(view: View, actions: Boolean?) {
-        view.visibility = if(actions == true) View.VISIBLE else View.GONE
+    @BindingAdapter("bind:show")
+    fun show(view: View, show: Boolean?) {
+        view.visibility = if(show == true) View.VISIBLE else View.GONE
+    }
+
+    @JvmStatic
+    @BindingAdapter("bind:hide")
+    fun hide(view: View, hide: Boolean?) {
+        view.visibility = if(hide == true) View.GONE else View.VISIBLE
     }
 
     /**

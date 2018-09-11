@@ -11,7 +11,10 @@
             name="status"
             type="Boolean"/>
         <variable
-            name="actions"
+            name="hideActions"
+            type="Boolean"/>
+        <variable
+            name="hideEdit"
             type="Boolean"/>
     </data>
 
@@ -77,7 +80,7 @@
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                bind:actions="@{actions}">
+                bind:hide="@{hideActions}">
 
                 <Button
                     style="@style/AppTheme.Text.Button"
@@ -93,7 +96,8 @@
                     android:layout_height="match_parent"
                     android:layout_marginTop="@dimen/contact_action_separator_margin"
                     android:layout_marginBottom="@dimen/contact_action_separator_margin"
-                    bind:status="@{status}"/>
+                    bind:status="@{status}"
+                    bind:hide="@{hideEdit}"/>
 
                 <Button
                     style="@style/AppTheme.Text.Button"
@@ -102,7 +106,8 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:background="?android:attr/selectableItemBackground"
-                    android:text="@string/contacts_action_edit"/>
+                    android:text="@string/contacts_action_edit"
+                    bind:hide="@{hideEdit}"/>
 
             </LinearLayout>
 

@@ -10,4 +10,6 @@ interface ContactsRepository {
 
     fun deleteContact(id: String)
 
+    fun deleteAllData()
+
 }

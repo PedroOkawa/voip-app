@@ -9,7 +9,6 @@ import android.view.MenuItem
 import android.widget.Toast
 import com.okawa.voip.R
 import com.okawa.voip.databinding.ActivityContactDetailsBinding
-import com.okawa.voip.model.Contact
 import com.okawa.voip.presenter.details.ContactDetailsPresenter
 import com.okawa.voip.ui.base.BaseActivity
 import com.okawa.voip.utils.extensions.getTextString
@@ -37,17 +36,14 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
 
     private val phoneNumber: String
         get() {
-            return dataBinding.edtCreateContactPhoneNumber.getTextString()
+            return dataBinding.txtCreateContactPhoneNumber.getTextString()
         }
-
-    private var contact: Contact? = null
-
-    private var photo:Uri? = null
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if(contact != null) {
+        if(contactDetailsPresenter.isEditMode()) {
             menuInflater.inflate(R.menu.menu_contact_details, menu)
         }
+
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -56,8 +52,10 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
             finish()
             return true
         } else if (item?.itemId == R.id.action_delete_contact) {
-            contactDetailsPresenter.deleteContact(contact?.id)
-            finish()
+            callManager.deleteContactConfirmation(this) {
+                contactDetailsPresenter.deleteContact()
+                finish()
+            }
             return true
         }
         return false
@@ -66,11 +64,11 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
     override fun layoutToInflate() = R.layout.activity_contact_details
 
     override fun doOnRestoreInstance(savedInstanceState: Bundle) {
-        contact = savedInstanceState.getParcelable(BUNDLE_CONTACTS)
+        contactDetailsPresenter.defineContact(savedInstanceState.getParcelable(BUNDLE_CONTACTS))
     }
 
     override fun doOnSaveInstance(outState: Bundle) {
-        outState.putParcelable(BUNDLE_CONTACTS, contact)
+        outState.putParcelable(BUNDLE_CONTACTS, contactDetailsPresenter.getContact())
     }
 
     override fun doOnCreated() {
@@ -94,15 +92,20 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
      * Retrieve contact parcelable
      */
     private fun retrieveContact() {
-        contact = intent.getParcelableExtra(BUNDLE_CONTACTS)
+        contactDetailsPresenter.defineContact(intent.getParcelableExtra(BUNDLE_CONTACTS))
     }
 
     /**
      * Initializes the toolbar
      */
     private fun initToolbar() {
+        val title = if(contactDetailsPresenter.isEditMode())
+            R.string.contact_details_edit_toolbar_title
+        else
+            R.string.contact_details_add_toolbar_title
+
         setSupportActionBar(dataBinding.tlbCreateContactToolbar)
-        setTitle(if(contact != null) R.string.contact_details_edit_toolbar_title else R.string.contact_details_add_toolbar_title)
+        setTitle(title)
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
         supportActionBar?.setHomeAsUpIndicator(R.drawable.ic_back)
     }
@@ -111,7 +114,7 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
      * Initializes the add photo button action
      */
     private fun initAddPhotoButton() {
-        dataBinding.btnCreateContactPhoto.setOnClickListener {
+        dataBinding.imbCreateContactPhoto.setOnClickListener {
             startActivityForResult(callManager.images(this@ContactDetailsActivity), REQUEST_CODE_IMAGE)
         }
     }
@@ -122,8 +125,8 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
      * @param uri photo
      */
     private fun definePhoto(uri: Uri) {
-        photo = uri
-        dataBinding.image = photo
+        contactDetailsPresenter.definePhoto(uri)
+        dataBinding.image = uri
     }
 
     /**
@@ -132,10 +135,10 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
     private fun initSaveButton() {
         dataBinding.btnCreateContactSave.setOnClickListener {
             if(validateForm()) {
-                if(contact != null && contact?.id != null) {
-                    contactDetailsPresenter.updateContact(contact?.id, name, photo)
+                if(contactDetailsPresenter.isEditMode()) {
+                    contactDetailsPresenter.updateContact(name)
                 } else {
-                    contactDetailsPresenter.insertContact(name, phoneNumber, photo)
+                    contactDetailsPresenter.insertContact(name, phoneNumber)
                 }
                 finish()
             }
@@ -146,20 +149,22 @@ class ContactDetailsActivity : BaseActivity<ActivityContactDetailsBinding>() {
      * Defines the initial form values
      */
     private fun defineInitialValues() {
-        if(contact != null) {
+        val contact = contactDetailsPresenter.getContact()
+
+        if(contactDetailsPresenter.isEditMode()) {
             dataBinding.edtCreateContactName.setText(contact?.name)
             contact?.photo?.let {
                 definePhoto(it)
             }
         }
 
-        val number = if(contact != null) {
-            contact?.number
+        val number = if(contact?.number != null) {
+            contact.number
         } else {
             contactDetailsPresenter.generateRandomVoIPAppNumber()
         }
 
-        dataBinding.edtCreateContactPhoneNumber.setText(number)
+        dataBinding.txtCreateContactPhoneNumber.setText(number)
     }
 
     /**

@@ -28,6 +28,7 @@ class DatabaseHelper @Inject constructor(application: Application) : SQLiteOpenH
         private val SQL_CREATE_HISTORY_TABLE = "CREATE TABLE IF NOT EXISTS ${History.TABLE_NAME} (" +
                 "${History.COLUMN_ID}$TYPE_INTEGER PRIMARY KEY AUTOINCREMENT," +
                 "${History.COLUMN_NAME}$TYPE_TEXT," +
+                "${History.COLUMN_CONTACT_ID}$TYPE_TEXT," +
                 "${History.COLUMN_NUMBER}$TYPE_TEXT," +
                 "${History.COLUMN_PHOTO}$TYPE_BLOB," +
                 "${History.COLUMN_IS_VOIP_APP}$TYPE_INTEGER," +

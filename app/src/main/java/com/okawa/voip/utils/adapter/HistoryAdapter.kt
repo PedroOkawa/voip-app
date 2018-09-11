@@ -8,7 +8,11 @@ import com.okawa.voip.utils.mapper.HistoryMapper
 import java.text.SimpleDateFormat
 import java.util.*
 
-class HistoryAdapter(private val historyMapper: HistoryMapper) : CursorBindingAdapter<History, AdapterHistoryBinding>() {
+class HistoryAdapter(private val historyMapper: HistoryMapper) : ContactActionsAdapter<History, AdapterHistoryBinding>() {
+
+    companion object {
+        const val DATE_FORMAT = "HH:mm - dd MMM"
+    }
 
     override fun layoutToInflate(viewType: Int) = R.layout.adapter_history
 
@@ -17,13 +21,28 @@ class HistoryAdapter(private val historyMapper: HistoryMapper) : CursorBindingAd
     }
 
     override fun doOnBindViewHolder(holder: BindingViewHolder<AdapterHistoryBinding>, item: History?, position: Int) {
-        holder.dataBinding?.txtHistoryName?.text = item?.name
-        holder.dataBinding?.txtHistoryNumber?.text = item?.number
-        holder.dataBinding?.txtHistoryDate?.text = convertDate(item?.date)
-        holder.dataBinding?.image = item?.photo
-        holder.dataBinding?.status = item?.isVoIPApp
-        holder.itemView.setOnClickListener {
+        holder.dataBinding?.let { binding ->
+            binding.txtHistoryName.text = item?.name
+            binding.txtHistoryNumber.text = item?.number
+            binding.txtHistoryDate.text = convertDate(item?.date)
+            binding.image = item?.photo
+            binding.status = item?.isVoIPApp
+            binding.hideActions = hideActions(position)
+            binding.hideEdit = item?.isVoIPApp == false
 
+            binding.btnHistoryCall.setOnClickListener {
+                onActionCallClicked(item)
+            }
+
+
+            binding.btnHistoryEdit.setOnClickListener {
+                onActionEditClicked(item)
+            }
+
+            binding.root.setOnClickListener {
+                defineActionsPosition(position)
+                binding.hideActions = hideActions(position)
+            }
         }
     }
 
@@ -35,6 +54,6 @@ class HistoryAdapter(private val historyMapper: HistoryMapper) : CursorBindingAd
      * @return Displayable date
      */
     private fun convertDate(date: Date?): String {
-        return SimpleDateFormat("HH:mm - dd MMM", Locale.getDefault()).format(date)
+        return SimpleDateFormat(DATE_FORMAT, Locale.getDefault()).format(date)
     }
 }

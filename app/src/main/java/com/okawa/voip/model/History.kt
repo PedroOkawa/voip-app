@@ -4,7 +4,7 @@ import android.net.Uri
 import com.okawa.voip.db.DatabaseHelper
 import java.util.*
 
-data class History(val name: String, val number: String, val photo: Uri?, val isVoIPApp: Boolean, val date: Date) {
+data class History(val contactId: String, val name: String, val number: String, val photo: Uri?, val isVoIPApp: Boolean, val date: Date) {
 
     companion object {
 
@@ -15,6 +15,7 @@ data class History(val name: String, val number: String, val photo: Uri?, val is
         const val TABLE_NAME = "history"
 
         const val COLUMN_ID = "id"
+        const val COLUMN_CONTACT_ID = "contact_id"
         const val COLUMN_NAME = "name"
         const val COLUMN_NUMBER = "number"
         const val COLUMN_PHOTO = "photo"
@@ -22,6 +23,7 @@ data class History(val name: String, val number: String, val photo: Uri?, val is
         const val COLUMN_DATE = "date"
 
         val PROJECTION = arrayOf(
+                COLUMN_CONTACT_ID,
                 COLUMN_NAME,
                 COLUMN_PHOTO,
                 COLUMN_NUMBER,

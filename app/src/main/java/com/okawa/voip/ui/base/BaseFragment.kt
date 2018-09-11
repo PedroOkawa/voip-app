@@ -8,6 +8,7 @@ import android.support.v4.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.okawa.voip.BR
 import dagger.android.support.AndroidSupportInjection
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
@@ -81,6 +82,14 @@ abstract class BaseFragment<T : ViewDataBinding> : Fragment() {
 
     protected open fun doOnSaveInstance(outState: Bundle) {
 
+    }
+
+    protected fun showLoading(value: Boolean) {
+        dataBinding.setVariable(BR.loading, value)
+    }
+
+    protected fun showEmpty(value: Boolean) {
+        dataBinding.setVariable(BR.empty, value)
     }
 
 }

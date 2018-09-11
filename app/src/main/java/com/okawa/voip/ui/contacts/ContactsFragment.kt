@@ -16,6 +16,7 @@ import com.okawa.voip.databinding.FragmentContactsBinding
 import com.okawa.voip.presenter.contacts.ContactsPresenter
 import com.okawa.voip.ui.base.BaseFragment
 import com.okawa.voip.model.Contact
+import com.okawa.voip.utils.adapter.ContactActionsAdapter
 import com.okawa.voip.utils.adapter.ContactAdapter
 import com.okawa.voip.utils.manager.CallManager
 import com.okawa.voip.utils.mapper.ContactMapper
@@ -46,6 +47,8 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     @Inject
     lateinit var contactsPresenter: ContactsPresenter
 
+    private var currentCursorQueryId = ALL_CONTACTS_QUERY_ID
+
     private var filterItemPosition: Int? = null
 
     private val contactAdapter: ContactAdapter by lazy {
@@ -72,7 +75,7 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         setHasOptionsMenu(true)
         initTabLayout()
         initRecyclerView()
-        retrieveInitialContent()
+        retrieveContent()
     }
 
     override fun doOnRestoreInstance(savedInstanceState: Bundle) {
@@ -93,13 +96,16 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
     }
 
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor?) {
-        contactAdapter.setCursor(cursor)
+        handleResult(loader.id, cursor)
     }
 
     override fun onLoaderReset(loader: Loader<Cursor>) {
-        contactAdapter.setCursor(null)
+        handleResult(loader.id, null)
     }
 
+    /**
+     * Initializes the tab layout setting a listener to check which query should be requested
+     */
     private fun initTabLayout() {
         dataBinding.tblContactsFilter.addOnTabSelectedListener(object: TabLayout.OnTabSelectedListener {
             override fun onTabReselected(tab: TabLayout.Tab?) { }
@@ -116,6 +122,9 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         restoreFilterItemSelection()
     }
 
+    /**
+     * Initializes the recycler view with the contacts adapter
+     */
     private fun initRecyclerView() {
         contactAdapter.defineTouchListener { actionType, contact ->
             handleAction(actionType, contact)
@@ -124,53 +133,93 @@ class ContactsFragment : BaseFragment<FragmentContactsBinding>(), LoaderManager.
         dataBinding.rclContactsContent.layoutManager = LinearLayoutManager(context)
     }
 
-    private fun retrieveInitialContent() {
+    /**
+     * Retrieves the content to be loaded
+     */
+    private fun retrieveContent() {
         if(loaderManager.getLoader<Cursor>(ALL_CONTACTS_QUERY_ID) != null) {
-            retrieveAllContacts()
+            loadData(ALL_CONTACTS_QUERY_ID)
         } else {
-            loaderManager.initLoader(ALL_CONTACTS_QUERY_ID, null, this)
+            retrieveInitialContacts()
         }
     }
 
-    private fun retrieveAllContacts() {
-        loadData(ALL_CONTACTS_QUERY_ID)
+    /**
+     * Retrieves the initial content to be loaded
+     */
+    private fun retrieveInitialContacts() {
+        showLoading(true)
+        loaderManager.initLoader(ALL_CONTACTS_QUERY_ID, null, this)
     }
 
-    private fun retrieveVoIPAppContacts() {
-        loadData(VOIP_APP_CONTACTS_QUERY_ID)
-    }
-
+    /**
+     * Loads the data based on the given query ID
+     *
+     * @param queryId of the loader
+     */
     private fun loadData(queryId: Int) {
-        loaderManager.destroyLoader(if(queryId == ALL_CONTACTS_QUERY_ID) VOIP_APP_CONTACTS_QUERY_ID else ALL_CONTACTS_QUERY_ID)
+        showLoading(true)
+        currentCursorQueryId = queryId
+        loaderManager.destroyLoader(ALL_CONTACTS_QUERY_ID)
+        loaderManager.destroyLoader(VOIP_APP_CONTACTS_QUERY_ID)
         loaderManager.restartLoader(queryId, null, this)
     }
 
+    /**
+     * Handles the filter position to retrieve the correct data
+     *
+     * @param position tab position
+     */
     private fun handleFilter(position: Int) {
         if(position == ALL_CONTACTS_TAB_POSITION) {
-            retrieveAllContacts()
+            loadData(ALL_CONTACTS_QUERY_ID)
         } else {
-            retrieveVoIPAppContacts()
+            loadData(VOIP_APP_CONTACTS_QUERY_ID)
         }
     }
 
+    /**
+     * Handles the action clicked on the adapter item
+     *
+     * @param actionType Type of the action clicked. It could be ACTION_TYPE_CALL or ACTION_TYPE_EDIT
+     * @param contact clicked
+     */
     private fun handleAction(actionType: Int, contact: Contact?) {
         contact?.let {
-            if(actionType == ContactAdapter.ACTION_TYPE_CALL) {
+            if(actionType == ContactActionsAdapter.ACTION_TYPE_CALL) {
                 Toast.makeText(context, context?.getString(R.string.contacts_called_message, contact.name), Toast.LENGTH_SHORT).show()
                 contactsPresenter.insertHistory(contact)
             } else {
                 context?.let {
-                    startActivity(callManager.contactDetails(it, contact))
+                    startActivity(callManager.details(it, contact))
                 }
             }
         }
     }
 
+    /**
+     * Restores the filter item selection
+     */
     private fun restoreFilterItemSelection() {
         filterItemPosition?.let {
             if(it == VOIP_APP_CONTACTS_TAB_POSITION) {
                 dataBinding.tblContactsFilter.getTabAt(it)?.select()
             }
+        }
+    }
+
+    /**
+     * handles the result of the cursor
+     *
+     * @param queryId cursor loader queryID
+     * @param cursor to be loaded
+     */
+    private fun handleResult(queryId: Int, cursor: Cursor?) {
+        if(queryId == currentCursorQueryId) {
+            showLoading(false)
+            showEmpty(cursor == null || cursor.count == 0)
+
+            contactAdapter.setCursor(cursor)
         }
     }
 }

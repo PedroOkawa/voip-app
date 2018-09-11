@@ -9,6 +9,11 @@
 
     <dimen name="on_boarding_phone_validation_item_margin">16dp</dimen>
 
+    <!-- SETTINGS -->
+
+    <dimen name="settings_item_margin_vertical">12dp</dimen>
+    <dimen name="settings_item_margin_horizontal">16dp</dimen>
+
     <!-- CONTACT -->
 
     <dimen name="contact_container_margin">4dp</dimen>
@@ -22,7 +27,8 @@
 
     <!-- CREATE CONTACT -->
 
-    <dimen name="contact_details_avatar_size">128dp</dimen>
+    <dimen name="contact_details_avatar_size">96dp</dimen>
+    <dimen name="contact_details_avatar_margin">8dp</dimen>
     <dimen name="contact_details_item_margin">16dp</dimen>
 
     <!-- TEXT SIZES -->

@@ -19,4 +19,8 @@ class ContactsRepositoryImpl @Inject constructor(private val databaseManager: Da
         databaseManager.deleteContact(id)
     }
 
+    override fun deleteAllData() {
+        databaseManager.deleteAllData()
+    }
+
 }

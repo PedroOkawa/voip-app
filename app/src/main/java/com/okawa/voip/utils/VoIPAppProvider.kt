@@ -40,7 +40,11 @@ class VoIPAppProvider: ContentProvider() {
 
     override fun getType(uri: Uri?) = null
 
-    override fun update(uri: Uri?, contentValues: ContentValues?, p2: String?, p3: Array<out String>?) = 0
+    override fun update(uri: Uri?, contentValues: ContentValues?, selection: String?, selectionArgs: Array<out String>?): Int {
+        return databaseHelper.readableDatabase.update(History.TABLE_NAME, contentValues, selection, selectionArgs)
+    }
 
-    override fun delete(uri: Uri?, p1: String?, p2: Array<out String>?) = 0
+    override fun delete(uri: Uri?, selection: String?, selectionArgs: Array<out String>?): Int {
+        return databaseHelper.readableDatabase.delete(History.TABLE_NAME, selection, selectionArgs)
+    }
 }

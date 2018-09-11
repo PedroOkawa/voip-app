@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.support.annotation.LayoutRes
 import android.support.v4.app.Fragment
 import android.support.v7.app.AppCompatActivity
+import com.okawa.voip.BR
 import dagger.android.AndroidInjection
 import dagger.android.DispatchingAndroidInjector
 import dagger.android.support.HasSupportFragmentInjector
@@ -71,6 +72,14 @@ abstract class BaseActivity<T : ViewDataBinding> : AppCompatActivity(), HasSuppo
 
     protected open fun doOnSaveInstance(outState: Bundle) {
 
+    }
+
+    protected fun showLoading(value: Boolean) {
+        dataBinding.setVariable(BR.loading, value)
+    }
+
+    protected fun showEmpty(value: Boolean) {
+        dataBinding.setVariable(BR.empty, value)
     }
 
 }

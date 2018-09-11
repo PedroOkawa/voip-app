@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <layout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:bind="http://schemas.android.com/apk/res-auto">
+    xmlns:bind="http://schemas.android.com/apk/res-auto"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
     <data>
         <variable
@@ -31,62 +32,56 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_margin="@dimen/contact_details_item_margin">
+                    android:layout_margin="@dimen/contact_details_item_margin"
+                    app:elevation="@dimen/contact_container_elevation">
 
                     <LinearLayout
-                        android:orientation="vertical"
+                        android:orientation="horizontal"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <FrameLayout
+                        <ImageButton
+                            android:id="@+id/imbCreateContactPhoto"
                             android:layout_width="@dimen/contact_details_avatar_size"
                             android:layout_height="@dimen/contact_details_avatar_size"
-                            android:layout_margin="@dimen/contact_details_item_margin"
-                            android:layout_gravity="center_horizontal">
+                            android:layout_margin="@dimen/contact_details_avatar_margin"
+                            android:scaleType="fitXY"
+                            android:background="?android:attr/selectableItemBackground"
+                            bind:placeholder="@{@drawable/ic_upload}"
+                            bind:circleImage="@{image}"/>
 
-                            <ImageView
-                                android:id="@+id/imgCreateContactPhoto"
+                        <LinearLayout
+                            android:orientation="vertical"
+                            android:layout_width="0dp"
+                            android:layout_height="match_parent"
+                            android:layout_weight="1"
+                            android:gravity="center">
+
+                            <EditText
+                                style="@style/AppTheme.Text.SubtitleOne"
+                                android:id="@+id/edtCreateContactName"
                                 android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                bind:placeholder="@{@drawable/ic_contact_details_placeholder}"
-                                bind:circleImage="@{image}"/>
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/contact_details_item_margin"
+                                android:layout_marginEnd="@dimen/contact_details_item_margin"
+                                android:hint="@string/contact_details_name_hint"
+                                android:inputType="textPersonName"
+                                android:gravity="center"
+                                android:lines="1"
+                                android:imeOptions="actionDone"/>
 
-                            <Button
-                                android:id="@+id/btnCreateContactPhoto"
-                                style="@style/AppTheme.Text.Button"
-                                android:layout_width="match_parent"
-                                android:layout_height="match_parent"
-                                android:background="@null"
-                                android:text="@string/contact_details_add_photo_button"/>
+                            <TextView
+                                style="@style/AppTheme.Text.SubtitleOne"
+                                android:id="@+id/txtCreateContactPhoneNumber"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_marginStart="@dimen/contact_details_item_margin"
+                                android:layout_marginEnd="@dimen/contact_details_item_margin"
+                                android:layout_marginBottom="@dimen/contact_details_item_margin"
+                                android:hint="@string/phone_validation_phone_hint"
+                                android:lines="1"/>
 
-                        </FrameLayout>
-
-                        <EditText
-                            style="@style/AppTheme.Text.SubtitleOne"
-                            android:id="@+id/edtCreateContactName"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/contact_details_item_margin"
-                            android:layout_marginEnd="@dimen/contact_details_item_margin"
-                            android:hint="@string/contact_details_name_hint"
-                            android:inputType="textPersonName"
-                            android:lines="1"
-                            android:imeOptions="actionNext"/>
-
-                        <EditText
-                            style="@style/AppTheme.Text.SubtitleOne"
-                            android:id="@+id/edtCreateContactPhoneNumber"
-                            android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
-                            android:layout_marginStart="@dimen/contact_details_item_margin"
-                            android:layout_marginEnd="@dimen/contact_details_item_margin"
-                            android:layout_marginBottom="@dimen/contact_details_item_margin"
-                            android:hint="@string/phone_validation_phone_hint"
-                            android:digits="0123456789"
-                            android:inputType="phone"
-                            android:lines="1"
-                            android:enabled="false"
-                            android:imeOptions="actionDone"/>
+                        </LinearLayout>
 
                     </LinearLayout>
 

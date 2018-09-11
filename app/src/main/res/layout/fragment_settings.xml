@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <Button
+            style="@style/AppTheme.Text.Button.Light"
+            android:id="@+id/btnSettingsClearHistory"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/settings_item_margin_vertical"
+            android:layout_marginBottom="@dimen/settings_item_margin_vertical"
+            android:layout_marginStart="@dimen/settings_item_margin_horizontal"
+            android:layout_marginEnd="@dimen/settings_item_margin_horizontal"
+            android:text="@string/settings_clear_history"
+            android:background="@drawable/selector_button"/>
+
+        <Button
+            style="@style/AppTheme.Text.Button.Light"
+            android:id="@+id/btnSettingsClearData"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/settings_item_margin_vertical"
+            android:layout_marginBottom="@dimen/settings_item_margin_vertical"
+            android:layout_marginStart="@dimen/settings_item_margin_horizontal"
+            android:layout_marginEnd="@dimen/settings_item_margin_horizontal"
+            android:text="@string/settings_clear_data"
+            android:background="@drawable/selector_button"/>
+
+    </LinearLayout>
+
+</layout>
